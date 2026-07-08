@@ -1,0 +1,6 @@
+{
+  "name": "Smart Interoperable Healthcare Record Management System (SIHRMS)",
+  "description": "A centralized, secure healthcare platform where patients store medical records, track access history, and grant permission to doctors.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

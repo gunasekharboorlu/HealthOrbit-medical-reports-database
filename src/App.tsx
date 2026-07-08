@@ -1,0 +1,693 @@
+import React, { useState, useEffect } from 'react';
+import { Activity } from 'lucide-react';
+import { api } from './api';
+import { Toast as ToastType, User } from './types';
+
+// Import our beautiful modular sub-components
+import Toast from './components/Toast';
+import Navbar from './components/Navbar';
+import LandingPage from './components/LandingPage';
+import AuthForms from './components/AuthForms';
+import PatientDashboard from './components/PatientDashboard';
+import DoctorDashboard from './components/DoctorDashboard';
+import AdminDashboard from './components/AdminDashboard';
+import EmergencyView from './components/EmergencyView';
+
+export default function App() {
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [view, setView] = useState<'landing' | 'login' | 'register' | 'patient-dashboard' | 'doctor-dashboard' | 'admin-dashboard' | 'emergency-view'>('landing');
+  const [authRole, setAuthRole] = useState<'patient' | 'doctor' | 'admin'>('patient');
+  
+  // Auth Form State
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [dob, setDob] = useState('');
+  const [gender, setGender] = useState('Male');
+  const [bloodGroup, setBloodGroup] = useState('O-Positive');
+  const [specialization, setSpecialization] = useState('General Medicine');
+  const [licenseNumber, setLicenseNumber] = useState('');
+  const [hospitalId, setHospitalId] = useState('HOSP-1');
+
+  // App General State
+  const [toast, setToast] = useState<ToastType | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // Patient Dashboard Data
+  const [patientData, setPatientData] = useState<any>(null);
+  const [uploadTitle, setUploadTitle] = useState('');
+  const [uploadCategory, setUploadCategory] = useState<'Lab Report' | 'Prescription' | 'Scan' | 'Discharge Summary' | 'Other'>('Lab Report');
+  const [uploadDesc, setUploadDesc] = useState('');
+  const [uploadIsSensitive, setUploadIsSensitive] = useState(false);
+  const [uploadFile, setUploadFile] = useState<{ name: string; size: string; content: string } | null>(null);
+  const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
+
+  // Edit Patient Details
+  const [editDob, setEditDob] = useState('');
+  const [editGender, setEditGender] = useState('');
+  const [editBlood, setEditBlood] = useState('');
+  const [editAllergies, setEditAllergies] = useState('');
+  const [editDiseases, setEditDiseases] = useState('');
+  const [editContactName, setEditContactName] = useState('');
+  const [editContactPhone, setEditContactPhone] = useState('');
+  const [editContactRelation, setEditContactRelation] = useState('');
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+
+  // Doctor Dashboard Data
+  const [doctorData, setDoctorData] = useState<any>(null);
+  const [searchId, setSearchId] = useState('');
+  const [searchedPatient, setSearchedPatient] = useState<any>(null);
+  const [diagnosis, setDiagnosis] = useState('');
+  const [medsList, setMedsList] = useState<{ name: string; dosage: string; frequency: string; duration: string }[]>([]);
+  const [medName, setMedName] = useState('');
+  const [medDosage, setMedDosage] = useState('');
+  const [medFreq, setMedFreq] = useState('');
+  const [medDur, setMedDur] = useState('');
+
+  // Doctor Upload For Patient
+  const [docUploadTitle, setDocUploadTitle] = useState('');
+  const [docUploadCategory, setDocUploadCategory] = useState<'Lab Report' | 'Prescription' | 'Scan' | 'Discharge Summary' | 'Other'>('Lab Report');
+  const [docUploadDesc, setDocUploadDesc] = useState('');
+  const [docUploadFile, setDocUploadFile] = useState<{ name: string; size: string; content: string } | null>(null);
+
+  // Admin Dashboard Data
+  const [adminData, setAdminData] = useState<any>(null);
+  const [newHospitalName, setNewHospitalName] = useState('');
+  const [newHospitalAddress, setNewHospitalAddress] = useState('');
+
+  // Emergency Look up State
+  const [emergencyIdInput, setEmergencyIdInput] = useState('');
+  const [emergencyProfile, setEmergencyProfile] = useState<any>(null);
+
+  // Toast helper
+  const showToast = (message: string, type: 'success' | 'error' | 'warning' | 'info' = 'info') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 5000);
+  };
+
+  // Initialize Auth
+  useEffect(() => {
+    const token = localStorage.getItem('sihrms_token');
+    if (token) {
+      setLoading(true);
+      api.me()
+        .then(user => {
+          setCurrentUser(user);
+          navigateToDashboard(user);
+        })
+        .catch(() => {
+          localStorage.removeItem('sihrms_token');
+          setView('landing');
+        })
+        .finally(() => setLoading(false));
+    }
+  }, []);
+
+  // Poll Notifications when logged in
+  useEffect(() => {
+    if (!currentUser) return;
+    const fetchNotifications = () => {
+      api.getNotifications()
+        .then(res => {
+          setNotifications(res);
+          setUnreadCount(res.filter((n: any) => !n.read).length);
+        })
+        .catch(err => console.error('Failed to load notifications', err));
+    };
+
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 15000);
+    return () => clearInterval(interval);
+  }, [currentUser]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('sihrms_token');
+    setCurrentUser(null);
+    setView('landing');
+    showToast('Logged out successfully', 'success');
+  };
+
+  const navigateToDashboard = (user: any) => {
+    if (user.role === 'patient') {
+      setView('patient-dashboard');
+      loadPatientDashboard();
+    } else if (user.role === 'doctor') {
+      setView('doctor-dashboard');
+      loadDoctorDashboard();
+    } else if (user.role === 'admin') {
+      setView('admin-dashboard');
+      loadAdminDashboard();
+    }
+  };
+
+  // LOAD DATA ACTIONS
+  const loadPatientDashboard = () => {
+    setLoading(true);
+    api.getPatientDashboard()
+      .then(data => {
+        setPatientData(data);
+        // Fill profile edit defaults
+        setEditDob(data.patient.dob || '');
+        setEditGender(data.patient.gender || 'Male');
+        setEditBlood(data.patient.bloodGroup || 'O-Positive');
+        setEditAllergies(data.patient.allergies || '');
+        setEditDiseases(data.patient.chronicDiseases || '');
+        setEditContactName(data.patient.emergencyContactName || '');
+        setEditContactPhone(data.patient.emergencyContactPhone || '');
+        setEditContactRelation(data.patient.emergencyContactRelation || '');
+      })
+      .catch(err => showToast(err.message, 'error'))
+      .finally(() => setLoading(false));
+  };
+
+  const loadDoctorDashboard = () => {
+    setLoading(true);
+    api.getDoctorDashboard()
+      .then(data => setDoctorData(data))
+      .catch(err => showToast(err.message, 'error'))
+      .finally(() => setLoading(false));
+  };
+
+  const loadAdminDashboard = () => {
+    setLoading(true);
+    api.getAdminDashboard()
+      .then(data => setAdminData(data))
+      .catch(err => showToast(err.message, 'error'))
+      .finally(() => setLoading(false));
+  };
+
+  // AUTH ACTIONS
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) return showToast('Please enter credentials', 'error');
+
+    setLoading(true);
+    api.login({ email, password })
+      .then(res => {
+        localStorage.setItem('sihrms_token', res.token);
+        setCurrentUser(res.user);
+        showToast(`Welcome back, ${res.user.name}!`, 'success');
+        navigateToDashboard(res.user);
+      })
+      .catch(err => showToast(err.message, 'error'))
+      .finally(() => setLoading(false));
+  };
+
+  const handleRegister = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password || !name) return showToast('All fields are required', 'error');
+
+    if (password.length < 8) {
+      return showToast('Password must be at least 8 characters long', 'error');
+    }
+    if (!/[A-Z]/.test(password)) {
+      return showToast('Password must contain at least one uppercase letter (A-Z)', 'error');
+    }
+    if (!/[a-z]/.test(password)) {
+      return showToast('Password must contain at least one lowercase letter (a-z)', 'error');
+    }
+    if (!/[0-9]/.test(password)) {
+      return showToast('Password must contain at least one number (0-9)', 'error');
+    }
+    if (!/[!@#$%^&*()]/.test(password)) {
+      return showToast('Password must contain at least one special character (!@#$%^&*())', 'error');
+    }
+
+    setLoading(true);
+    const extraData = authRole === 'patient' 
+      ? { dob, gender, bloodGroup }
+      : { specialization, licenseNumber, hospitalId };
+
+    api.register({ email, password, role: authRole, name, extraData })
+      .then(res => {
+        localStorage.setItem('sihrms_token', res.token);
+        setCurrentUser(res.user);
+        showToast('Account registered successfully!', 'success');
+        navigateToDashboard(res.user);
+      })
+      .catch(err => showToast(err.message, 'error'))
+      .finally(() => setLoading(false));
+  };
+
+  // PATIENT FEATURES
+  const handleUpdateProfile = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    api.updateProfile({
+      dob: editDob,
+      gender: editGender,
+      bloodGroup: editBlood,
+      allergies: editAllergies,
+      chronicDiseases: editDiseases,
+      emergencyContactName: editContactName,
+      emergencyContactPhone: editContactPhone,
+      emergencyContactRelation: editContactRelation
+    })
+      .then(() => {
+        showToast('Medical profile updated successfully', 'success');
+        setIsEditingProfile(false);
+        loadPatientDashboard();
+      })
+      .catch(err => showToast(err.message, 'error'))
+      .finally(() => setLoading(false));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, isDoc: boolean = false) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64Content = reader.result as string;
+      const fileData = {
+        name: file.name,
+        size: `${(file.size / 1024).toFixed(1)} KB`,
+        content: base64Content
+      };
+
+      if (isDoc) {
+        setDocUploadFile(fileData);
+      } else {
+        setUploadFile(fileData);
+        // Check for duplicate locally first to show immediate UI warning
+        if (patientData?.records) {
+          const isDup = patientData.records.some((r: any) => r.fileName === file.name && r.fileSize === fileData.size);
+          if (isDup) {
+            setDuplicateWarning('Warning: A file with the exact same name and size already exists in your timeline!');
+          } else {
+            setDuplicateWarning(null);
+          }
+        }
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleUploadRecord = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!uploadTitle || !uploadFile) return showToast('Please provide a title and select a report file', 'error');
+
+    setLoading(true);
+    api.uploadRecord({
+      title: uploadTitle,
+      description: uploadDesc,
+      category: uploadCategory,
+      fileName: uploadFile.name,
+      fileSize: uploadFile.size,
+      fileContent: uploadFile.content,
+      isSensitive: uploadIsSensitive
+    })
+      .then(() => {
+        showToast('Medical record uploaded successfully!', 'success');
+        setUploadTitle('');
+        setUploadDesc('');
+        setUploadFile(null);
+        setUploadIsSensitive(false);
+        setDuplicateWarning(null);
+        loadPatientDashboard();
+      })
+      .catch(err => {
+        showToast(err.message, 'error');
+      })
+      .finally(() => setLoading(false));
+  };
+
+  const handleDeleteRecord = (id: string) => {
+    if (!confirm('Are you absolutely sure you want to delete this medical report? This action is irreversible.')) return;
+
+    setLoading(true);
+    api.deleteRecord(id)
+      .then(() => {
+        showToast('Medical record deleted successfully', 'success');
+        loadPatientDashboard();
+      })
+      .catch(err => showToast(err.message, 'error'))
+      .finally(() => setLoading(false));
+  };
+
+  const handleRespondAccess = (id: string, status: 'approved' | 'rejected') => {
+    setLoading(true);
+    api.respondAccess(id, status)
+      .then(() => {
+        showToast(`Access request ${status} successfully`, 'success');
+        loadPatientDashboard();
+      })
+      .catch(err => showToast(err.message, 'error'))
+      .finally(() => setLoading(false));
+  };
+
+  // DOCTOR ACTIONS
+  const handleSearchPatient = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchId) return showToast('Please enter a Patient ID', 'error');
+
+    setLoading(true);
+    setSearchedPatient(null);
+    api.searchPatient(searchId)
+      .then(res => {
+        setSearchedPatient(res);
+        showToast(`Found records for patient ${res.patient.name}`, 'success');
+      })
+      .catch(err => {
+        showToast(err.message, 'error');
+      })
+      .finally(() => setLoading(false));
+  };
+
+  const handleRequestAccess = (recordId: string) => {
+    if (!searchedPatient) return;
+    setLoading(true);
+    api.requestAccess(searchedPatient.patient.patientId, recordId)
+      .then(() => {
+        showToast('Access request sent successfully! Awaiting patient approval.', 'success');
+        // Reload searched patient to update pending locks
+        api.searchPatient(searchedPatient.patient.patientId)
+          .then(res => setSearchedPatient(res));
+      })
+      .catch(err => showToast(err.message, 'error'))
+      .finally(() => setLoading(false));
+  };
+
+  const handleAddMedication = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!medName || !medDosage || !medFreq || !medDur) {
+      return showToast('Please fill all medication fields', 'warning');
+    }
+    setMedsList([...medsList, { name: medName, dosage: medDosage, frequency: medFreq, duration: medDur }]);
+    setMedName('');
+    setMedDosage('');
+    setMedFreq('');
+    setMedDur('');
+  };
+
+  const handleRemoveMedication = (index: number) => {
+    setMedsList(medsList.filter((_, i) => i !== index));
+  };
+
+  const handleAddPrescription = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchedPatient) return;
+    if (!diagnosis) return showToast('Please enter diagnosis', 'error');
+    if (medsList.length === 0) return showToast('Please add at least one medication', 'error');
+
+    setLoading(true);
+    api.addPrescription({
+      patientId: searchedPatient.patient.patientId,
+      diagnosis,
+      medications: medsList
+    })
+      .then(() => {
+        showToast('Prescription added successfully!', 'success');
+        setDiagnosis('');
+        setMedsList([]);
+        // Refresh searched patient
+        api.searchPatient(searchedPatient.patient.patientId)
+          .then(res => setSearchedPatient(res));
+      })
+      .catch(err => showToast(err.message, 'error'))
+      .finally(() => setLoading(false));
+  };
+
+  const handleDocUploadForPatient = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchedPatient) return;
+    if (!docUploadTitle || !docUploadFile) return showToast('Please provide a title and select a report file', 'error');
+
+    setLoading(true);
+    api.uploadRecord({
+      title: docUploadTitle,
+      description: docUploadDesc,
+      category: docUploadCategory,
+      fileName: docUploadFile.name,
+      fileSize: docUploadFile.size,
+      fileContent: docUploadFile.content,
+      isSensitive: false,
+      targetPatientId: searchedPatient.patient.patientId
+    })
+      .then(() => {
+        showToast('Medical record uploaded and linked directly to patient timeline!', 'success');
+        setDocUploadTitle('');
+        setDocUploadDesc('');
+        setDocUploadFile(null);
+        // Refresh searched patient
+        api.searchPatient(searchedPatient.patient.patientId)
+          .then(res => setSearchedPatient(res));
+      })
+      .catch(err => showToast(err.message, 'error'))
+      .finally(() => setLoading(false));
+  };
+
+  // ADMIN ACTIONS
+  const handleVerifyDoctor = (userId: string, verify: boolean) => {
+    setLoading(true);
+    api.verifyDoctor(userId, verify)
+      .then(() => {
+        showToast(`Doctor account status ${verify ? 'verified' : 'revoked'}`, 'success');
+        loadAdminDashboard();
+      })
+      .catch(err => showToast(err.message, 'error'))
+      .finally(() => setLoading(false));
+  };
+
+  const handleAddHospital = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newHospitalName || !newHospitalAddress) return showToast('Please enter name and address', 'error');
+
+    setLoading(true);
+    api.addHospital({ name: newHospitalName, address: newHospitalAddress })
+      .then(() => {
+        showToast('New partner hospital registered successfully', 'success');
+        setNewHospitalName('');
+        setNewHospitalAddress('');
+        loadAdminDashboard();
+      })
+      .catch(err => showToast(err.message, 'error'))
+      .finally(() => setLoading(false));
+  };
+
+  // EMERGENCY VIEW
+  const handleLookupEmergency = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!emergencyIdInput) return showToast('Please enter Patient ID', 'error');
+
+    setLoading(true);
+    api.getEmergencyProfile(emergencyIdInput)
+      .then(res => {
+        if (res.error) {
+          showToast(res.error, 'error');
+          setEmergencyProfile(null);
+        } else {
+          setEmergencyProfile(res);
+          showToast(`Emergency profile loaded for ${res.name}`, 'success');
+        }
+      })
+      .catch(err => {
+        showToast(err.message, 'error');
+        setEmergencyProfile(null);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  // NOTIFICATION UTILS
+  const handleMarkRead = (id: string) => {
+    api.markNotificationRead(id)
+      .then(() => {
+        setNotifications(notifications.map(n => n.id === id ? { ...n, read: true } : n));
+        setUnreadCount(prev => Math.max(0, prev - 1));
+      });
+  };
+
+  const handleMarkAllRead = () => {
+    api.markAllNotificationsRead()
+      .then(() => {
+        setNotifications(notifications.map(n => ({ ...n, read: true })));
+        setUnreadCount(0);
+        showToast('All notifications marked as read', 'success');
+      });
+  };
+
+  // Helper download simulated PDF/image
+  const downloadFile = (fileName: string, base64Content: string) => {
+    const link = document.createElement('a');
+    link.href = base64Content;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast(`Downloaded: ${fileName}`, 'success');
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-[#fafbfc]">
+      
+      {/* Toast Alert Widget */}
+      <Toast toast={toast} onClose={() => setToast(null)} />
+
+      {/* Navigation Header */}
+      <Navbar 
+        currentUser={currentUser}
+        unreadCount={unreadCount}
+        notifications={notifications}
+        view={view}
+        setView={setView}
+        navigateToDashboard={navigateToDashboard}
+        handleLogout={handleLogout}
+        handleMarkAllRead={handleMarkAllRead}
+        handleMarkRead={handleMarkRead}
+      />
+
+      {/* Global Syncing Loader */}
+      {loading && (
+        <div className="fixed inset-0 bg-slate-900/10 backdrop-blur-xs flex items-center justify-center z-50">
+          <div className="bg-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 border border-slate-50">
+            <div className="w-5 h-5 border-2 border-teal-600 border-t-transparent rounded-full animate-spin"></div>
+            <span className="font-semibold text-xs text-slate-600">Synchronizing secure data...</span>
+          </div>
+        </div>
+      )}
+
+      {/* Main Containers */}
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+        {view === 'landing' && (
+          <LandingPage setView={setView} setAuthRole={setAuthRole} />
+        )}
+
+        {(view === 'login' || view === 'register') && (
+          <AuthForms 
+            view={view}
+            setView={setView}
+            authRole={authRole}
+            setAuthRole={setAuthRole}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            name={name}
+            setName={setName}
+            dob={dob}
+            setDob={setDob}
+            gender={gender}
+            setGender={setGender}
+            bloodGroup={bloodGroup}
+            setBloodGroup={setBloodGroup}
+            specialization={specialization}
+            setSpecialization={setSpecialization}
+            licenseNumber={licenseNumber}
+            setLicenseNumber={setLicenseNumber}
+            hospitalId={hospitalId}
+            setHospitalId={setHospitalId}
+            handleLogin={handleLogin}
+            handleRegister={handleRegister}
+          />
+        )}
+
+        {view === 'patient-dashboard' && (
+          <PatientDashboard 
+            patientData={patientData}
+            uploadTitle={uploadTitle}
+            setUploadTitle={setUploadTitle}
+            uploadCategory={uploadCategory}
+            setUploadCategory={setUploadCategory}
+            uploadDesc={uploadDesc}
+            setUploadDesc={setUploadDesc}
+            uploadIsSensitive={uploadIsSensitive}
+            setUploadIsSensitive={setUploadIsSensitive}
+            uploadFile={uploadFile}
+            duplicateWarning={duplicateWarning}
+            editDob={editDob}
+            setEditDob={setEditDob}
+            editGender={editGender}
+            setEditGender={setEditGender}
+            editBlood={editBlood}
+            setEditBlood={setEditBlood}
+            editAllergies={editAllergies}
+            setEditAllergies={setEditAllergies}
+            editDiseases={editDiseases}
+            setEditDiseases={setEditDiseases}
+            editContactName={editContactName}
+            setEditContactName={setEditContactName}
+            editContactPhone={editContactPhone}
+            setEditContactPhone={setEditContactPhone}
+            editContactRelation={editContactRelation}
+            setEditContactRelation={setEditContactRelation}
+            isEditingProfile={isEditingProfile}
+            setIsEditingProfile={setIsEditingProfile}
+            handleUpdateProfile={handleUpdateProfile}
+            handleFileChange={handleFileChange}
+            handleUploadRecord={handleUploadRecord}
+            handleDeleteRecord={handleDeleteRecord}
+            handleRespondAccess={handleRespondAccess}
+            downloadFile={downloadFile}
+          />
+        )}
+
+        {view === 'doctor-dashboard' && (
+          <DoctorDashboard 
+            doctorData={doctorData}
+            searchId={searchId}
+            setSearchId={setSearchId}
+            searchedPatient={searchedPatient}
+            diagnosis={diagnosis}
+            setDiagnosis={setDiagnosis}
+            medsList={medsList}
+            addMedName={medName}
+            setAddMedName={setMedName}
+            addMedDosage={medDosage}
+            setAddMedDosage={setMedDosage}
+            addMedFreq={medFreq}
+            setAddMedFreq={setMedFreq}
+            addMedDur={medDur}
+            setAddMedDur={setMedDur}
+            handleAddMedication={handleAddMedication}
+            handleRemoveMedication={handleRemoveMedication}
+            handleSearchPatient={handleSearchPatient}
+            handleRequestAccess={handleRequestAccess}
+            handleAddPrescription={handleAddPrescription}
+            docUploadTitle={docUploadTitle}
+            setDocUploadTitle={setDocUploadTitle}
+            docUploadCategory={docUploadCategory}
+            setDocUploadCategory={setDocUploadCategory}
+            docUploadDesc={docUploadDesc}
+            setDocUploadDesc={setDocUploadDesc}
+            docUploadFile={docUploadFile}
+            handleFileChange={(e) => handleFileChange(e, true)}
+            handleDocUploadForPatient={handleDocUploadForPatient}
+            downloadFile={downloadFile}
+          />
+        )}
+
+        {view === 'admin-dashboard' && (
+          <AdminDashboard 
+            adminData={adminData}
+            newHospitalName={newHospitalName}
+            setNewHospitalName={setNewHospitalName}
+            newHospitalAddress={newHospitalAddress}
+            setNewHospitalAddress={setNewHospitalAddress}
+            handleVerifyDoctor={handleVerifyDoctor}
+            handleAddHospital={handleAddHospital}
+          />
+        )}
+
+        {view === 'emergency-view' && (
+          <EmergencyView 
+            emergencyIdInput={emergencyIdInput}
+            setEmergencyIdInput={setEmergencyIdInput}
+            emergencyProfile={emergencyProfile}
+            handleLookupEmergency={handleLookupEmergency}
+          />
+        )}
+      </main>
+
+      {/* Universal Footer */}
+      <footer className="bg-white border-t border-slate-100 py-8 text-center text-xs text-slate-400 mt-20">
+        <div className="max-w-7xl mx-auto px-4 space-y-1">
+          <p className="font-bold text-slate-500">Smart Interoperable Healthcare Record Management System (SIHRMS)</p>
+          <p>Secure clinical interoperability and centralized digital database storage. Adhering strictly to patient privacy mandates.</p>
+          <p className="text-[10px] text-slate-300 mt-2">© 2026 SIHRMS Organisation. All simulated medical transactions are highly encrypted.</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
