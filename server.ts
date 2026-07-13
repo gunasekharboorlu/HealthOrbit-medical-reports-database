@@ -541,43 +541,198 @@ app.get('/api/doctor/dashboard', authenticateToken, requireRole(['doctor']), (re
     return res.status(404).json({ error: 'Doctor profile not found' });
   }
 
+  // Doctor details from User
+  const user = db.getUsers().find(u => u.id === req.user.id);
+
   // Doctor gets stats
   const pendingRequests = db.getAccessRequests().filter(r => r.doctorId === req.user.id && r.status === 'pending');
+  
+  // Calculate active approved requests (checking 24-hour expiry!)
+  const activeApprovedRequests = db.getAccessRequests().filter(
+    r => r.doctorId === req.user.id && 
+         r.status === 'approved' && 
+         (!r.respondedAt || (Date.now() - new Date(r.respondedAt).getTime() < 24 * 60 * 60 * 1000))
+  );
+
   const pastRequests = db.getAccessRequests().filter(r => r.doctorId === req.user.id && r.status !== 'pending');
   const recentPrescriptions = db.getPrescriptions().filter(p => p.doctorId === req.user.id).slice(0, 10);
 
+  // Calculate unique patients viewed/accessed
+  const doctorPrescriptions = db.getPrescriptions().filter(p => p.doctorId === req.user.id);
+  const doctorRequests = db.getAccessRequests().filter(r => r.doctorId === req.user.id);
+  const searchLogs = db.getAuditLogs().filter(l => l.userId === req.user.id && l.action === 'PATIENT_SEARCH');
+  
+  const viewedPatientIds = new Set<string>();
+  doctorPrescriptions.forEach(p => viewedPatientIds.add(p.patientId.toUpperCase()));
+  doctorRequests.forEach(r => viewedPatientIds.add(r.patientId.toUpperCase()));
+  searchLogs.forEach(l => {
+    const match = l.details.match(/PAT-\d+/i);
+    if (match) viewedPatientIds.add(match[0].toUpperCase());
+  });
+  
+  const totalPatientsViewed = viewedPatientIds.size;
+
+  // Calculate today's prescriptions
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const todayPrescriptions = db.getPrescriptions().filter(
+    p => p.doctorId === req.user.id && p.createdAt.startsWith(todayStr)
+  );
+
+  // Recent doctor-specific activities from audit logs
+  const recentActivity = db.getAuditLogs().filter(
+    l => l.userId === req.user.id
+  ).reverse().slice(0, 15);
+
+  // Directory of all patients
+  const allPatients = db.getPatients().map(p => {
+    const u = db.getUsers().find(userObj => userObj.id === p.userId);
+    // Find last visit by checking reports and prescriptions
+    const patientRecords = db.getMedicalRecords().filter(r => r.patientId === p.patientId);
+    const patientPrescriptions = db.getPrescriptions().filter(prsc => prsc.patientId === p.patientId);
+    
+    let lastVisit = 'No visits yet';
+    const dates = [
+      ...patientRecords.map(r => r.createdAt),
+      ...patientPrescriptions.map(prsc => prsc.createdAt)
+    ].sort();
+    
+    if (dates.length > 0) {
+      lastVisit = new Date(dates[dates.length - 1]).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    }
+
+    return {
+      patientId: p.patientId,
+      name: u?.name || 'Patient',
+      email: u?.email || 'N/A',
+      age: p.dob ? new Date().getFullYear() - new Date(p.dob).getFullYear() : 'N/A',
+      gender: p.gender || 'N/A',
+      bloodGroup: p.bloodGroup || 'N/A',
+      phone: p.phone || p.emergencyContactPhone || 'N/A',
+      dob: p.dob || 'N/A',
+      allergies: p.allergies || 'None',
+      chronicDiseases: p.chronicDiseases || 'None',
+      lastVisit
+    };
+  });
+
   res.json({
-    doctor,
+    doctor: {
+      ...doctor,
+      name: user?.name || req.user.name,
+      email: user?.email || req.user.email
+    },
+    stats: {
+      totalPatientsViewed,
+      pendingAccessRequests: pendingRequests.length,
+      approvedAccessRequests: activeApprovedRequests.length,
+      todayPrescriptions: todayPrescriptions.length,
+      recentActivity
+    },
     pendingRequests,
     pastRequests,
-    recentPrescriptions
+    recentPrescriptions,
+    allPatients
   });
 });
 
-// Search Patient by Patient ID
+// Update Doctor Profile
+app.put('/api/doctor/profile', authenticateToken, requireRole(['doctor']), (req: any, res) => {
+  try {
+    const { name, phone, profilePicture, about, experience, department, specialization } = req.body;
+
+    const doctor = db.getDoctors().find(d => d.userId === req.user.id);
+    if (!doctor) {
+      return res.status(404).json({ error: 'Doctor profile not found' });
+    }
+
+    // Update User Name if modified
+    if (name) {
+      db.updateUser(req.user.id, { name });
+    }
+
+    // Update Doctor record
+    const updated = db.updateDoctor(req.user.id, {
+      phone: phone !== undefined ? phone : doctor.phone,
+      profilePicture: profilePicture !== undefined ? profilePicture : doctor.profilePicture,
+      about: about !== undefined ? about : doctor.about,
+      experience: experience !== undefined ? experience : doctor.experience,
+      department: department !== undefined ? department : doctor.department,
+      specialization: specialization !== undefined ? specialization : doctor.specialization
+    });
+
+    db.addAuditLog(req.user.id, name || req.user.name, 'doctor', 'PROFILE_UPDATE', 'Updated doctor details');
+
+    res.json({ success: true, doctor: updated });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Custom Log Action Endpoint (For UI audits)
+app.post('/api/audit/log-action', authenticateToken, (req: any, res) => {
+  try {
+    const { action, details } = req.body;
+    if (!action || !details) {
+      return res.status(400).json({ error: 'Action and details are required' });
+    }
+    db.addAuditLog(req.user.id, req.user.name, req.user.role, action, details);
+    res.json({ success: true });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Search Patient by Patient ID, Name, or Mobile Number
 app.post('/api/doctor/search-patient', authenticateToken, requireRole(['doctor']), (req: any, res) => {
   try {
-    const { patientId } = req.body;
-    if (!patientId) {
-      return res.status(400).json({ error: 'Patient ID is required' });
+    const { patientId, query } = req.body;
+    const searchQuery = (query || patientId || '').trim();
+
+    if (!searchQuery) {
+      return res.status(400).json({ error: 'Please enter a Patient ID, Name, or Mobile Number' });
     }
 
-    const patient = db.getPatients().find(p => p.patientId.toUpperCase() === patientId.toUpperCase());
-    if (!patient) {
-      return res.status(404).json({ error: 'No patient found with this ID' });
+    const allPatients = db.getPatients();
+    const allUsers = db.getUsers();
+
+    // Matching:
+    // 1. Patient ID (exact or partial case-insensitive)
+    // 2. Patient Name (partial case-insensitive)
+    // 3. Mobile Number (patient phone or emergency contact phone)
+    const matchedPatients = allPatients.filter(p => {
+      const user = allUsers.find(u => u.id === p.userId);
+      const nameMatches = user ? user.name.toLowerCase().includes(searchQuery.toLowerCase()) : false;
+      const idMatches = p.patientId.toLowerCase().includes(searchQuery.toLowerCase());
+      const phoneMatches = (p.phone || '').includes(searchQuery) || 
+                           (p.emergencyContactPhone || '').includes(searchQuery);
+      return idMatches || nameMatches || phoneMatches;
+    });
+
+    if (matchedPatients.length === 0) {
+      return res.status(404).json({ error: 'No patients found matching your search query' });
     }
 
-    const user = db.getUsers().find(u => u.id === patient.userId);
+    // If an exact Patient ID match exists, let's treat that as the primary selected patient (for backward compatibility!)
+    const exactPatient = matchedPatients.find(p => p.patientId.toUpperCase() === searchQuery.toUpperCase()) || matchedPatients[0];
+
+    const user = db.getUsers().find(u => u.id === exactPatient.userId);
     if (!user) {
       return res.status(404).json({ error: 'Patient account details not found' });
     }
 
     // Get medical records: Non-sensitive are accessible directly; sensitive are privacy-locked
-    const allRecords = db.getMedicalRecords().filter(r => r.patientId === patient.patientId);
+    const allRecords = db.getMedicalRecords().filter(r => r.patientId === exactPatient.patientId);
     
-    // Check which sensitive records the doctor has active approved access for
+    // Check which sensitive records the doctor has active approved access for (enforcing 24-hour expiry!)
     const approvedAccessRequests = db.getAccessRequests().filter(
-      r => r.patientId === patient.patientId && r.doctorId === req.user.id && r.status === 'approved'
+      r => r.patientId === exactPatient.patientId && 
+           r.doctorId === req.user.id && 
+           r.status === 'approved' &&
+           (!r.respondedAt || (Date.now() - new Date(r.respondedAt).getTime() < 24 * 60 * 60 * 1000))
     );
 
     const allowedRecordIds = new Set(approvedAccessRequests.map(r => r.recordId).filter(Boolean));
@@ -604,26 +759,62 @@ app.post('/api/doctor/search-patient', authenticateToken, requireRole(['doctor']
       };
     });
 
-    const prescriptions = db.getPrescriptions().filter(prsc => prsc.patientId === patient.patientId);
+    const prescriptions = db.getPrescriptions().filter(prsc => prsc.patientId === exactPatient.patientId);
 
-    // Log the search
-    db.addAuditLog(req.user.id, req.user.name, 'doctor', 'PATIENT_SEARCH', `Searched for patient ${patientId}`);
+    // Log the search action
+    db.addAuditLog(req.user.id, req.user.name, 'doctor', 'PATIENT_SEARCH', `Searched with query: "${searchQuery}" (viewed ${exactPatient.patientId})`);
+
+    // Prepare search results
+    const results = matchedPatients.map(p => {
+      const u = allUsers.find(userObj => userObj.id === p.userId);
+      // Find last visit
+      const patientRecords = db.getMedicalRecords().filter(r => r.patientId === p.patientId);
+      const patientPrescriptions = db.getPrescriptions().filter(prsc => prsc.patientId === p.patientId);
+      let lastVisit = 'No visits yet';
+      const dates = [
+        ...patientRecords.map(r => r.createdAt),
+        ...patientPrescriptions.map(prsc => prsc.createdAt)
+      ].sort();
+      if (dates.length > 0) {
+        lastVisit = new Date(dates[dates.length - 1]).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+      }
+
+      return {
+        patientId: p.patientId,
+        name: u?.name || 'Patient',
+        age: p.dob ? new Date().getFullYear() - new Date(p.dob).getFullYear() : 'N/A',
+        gender: p.gender || 'N/A',
+        bloodGroup: p.bloodGroup || 'N/A',
+        phone: p.phone || p.emergencyContactPhone || 'N/A',
+        dob: p.dob || 'N/A',
+        lastVisit
+      };
+    });
 
     res.json({
       patient: {
-        patientId: patient.patientId,
+        patientId: exactPatient.patientId,
         name: user.name,
-        dob: patient.dob,
-        gender: patient.gender,
-        bloodGroup: patient.bloodGroup,
-        allergies: patient.allergies,
-        chronicDiseases: patient.chronicDiseases,
-        emergencyContactName: patient.emergencyContactName,
-        emergencyContactPhone: patient.emergencyContactPhone,
-        emergencyContactRelation: patient.emergencyContactRelation
+        dob: exactPatient.dob,
+        gender: exactPatient.gender,
+        bloodGroup: exactPatient.bloodGroup,
+        allergies: exactPatient.allergies,
+        chronicDiseases: exactPatient.chronicDiseases,
+        emergencyContactName: exactPatient.emergencyContactName,
+        emergencyContactPhone: exactPatient.emergencyContactPhone,
+        emergencyContactRelation: exactPatient.emergencyContactRelation,
+        phone: exactPatient.phone,
+        height: exactPatient.height,
+        weight: exactPatient.weight,
+        currentMedications: exactPatient.currentMedications
       },
       records: accessibleRecords,
-      prescriptions
+      prescriptions,
+      matchedResults: results
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });

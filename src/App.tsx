@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Activity } from 'lucide-react';
 import { api } from './api';
 import { Toast as ToastType, User } from './types';
@@ -520,8 +521,12 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fafbfc]">
+    <div className="min-h-screen flex flex-col bg-[#050816] text-white relative overflow-hidden cyber-grid">
       
+      {/* Decorative ambient glowing backdrops */}
+      <div className="absolute top-[-10%] left-[10%] w-[500px] h-[500px] bg-[#4f8cff]/10 rounded-full blur-[150px] pointer-events-none animate-pulse-glow" />
+      <div className="absolute bottom-[-10%] right-[10%] w-[500px] h-[500px] bg-[#7c5cff]/8 rounded-full blur-[150px] pointer-events-none animate-pulse-glow" style={{ animationDelay: '2s' }} />
+
       {/* Toast Alert Widget */}
       <Toast toast={toast} onClose={() => setToast(null)} />
 
@@ -540,152 +545,220 @@ export default function App() {
 
       {/* Global Syncing Loader */}
       {loading && (
-        <div className="fixed inset-0 bg-slate-900/10 backdrop-blur-xs flex items-center justify-center z-50">
-          <div className="bg-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 border border-slate-50">
-            <div className="w-5 h-5 border-2 border-teal-600 border-t-transparent rounded-full animate-spin"></div>
-            <span className="font-semibold text-xs text-slate-600">Synchronizing secure data...</span>
+        <div className="fixed inset-0 bg-[#050816]/75 backdrop-blur-md flex items-center justify-center z-[100] transition-all duration-300">
+          <div className="glass-card-glowing max-w-sm w-full mx-4 p-8 rounded-3xl border border-[#4f8cff]/30 text-center space-y-4">
+            <div className="relative w-16 h-16 mx-auto flex items-center justify-center">
+              <div className="absolute inset-0 border-2 border-[#4f8cff]/20 rounded-full"></div>
+              <div className="absolute inset-0 border-2 border-t-[#4f8cff] border-r-transparent rounded-full animate-spin"></div>
+              <Activity className="w-6 h-6 text-[#4f8cff] animate-pulse" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-white tracking-wider uppercase font-display">SIHRMS Secure Engine</p>
+              <p className="text-xs text-slate-400 mt-1">Synchronizing clinical ledger ledger...</p>
+            </div>
+            <div className="w-full bg-slate-950/50 rounded-full h-1 overflow-hidden">
+              <div className="bg-gradient-to-r from-[#4f8cff] to-[#7c5cff] h-full w-[70%] rounded-full animate-[shimmer_2s_infinite]"></div>
+            </div>
           </div>
         </div>
       )}
 
       {/* Main Containers */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
-        {view === 'landing' && (
-          <LandingPage setView={setView} setAuthRole={setAuthRole} />
-        )}
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 relative z-10">
+        <AnimatePresence mode="wait">
+          {view === 'landing' && (
+            <motion.div
+              key="landing"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+            >
+              <LandingPage setView={setView} setAuthRole={setAuthRole} />
+            </motion.div>
+          )}
 
-        {(view === 'login' || view === 'register') && (
-          <AuthForms 
-            view={view}
-            setView={setView}
-            authRole={authRole}
-            setAuthRole={setAuthRole}
-            email={email}
-            setEmail={setEmail}
-            password={password}
-            setPassword={setPassword}
-            name={name}
-            setName={setName}
-            dob={dob}
-            setDob={setDob}
-            gender={gender}
-            setGender={setGender}
-            bloodGroup={bloodGroup}
-            setBloodGroup={setBloodGroup}
-            specialization={specialization}
-            setSpecialization={setSpecialization}
-            licenseNumber={licenseNumber}
-            setLicenseNumber={setLicenseNumber}
-            hospitalId={hospitalId}
-            setHospitalId={setHospitalId}
-            handleLogin={handleLogin}
-            handleRegister={handleRegister}
-          />
-        )}
+          {(view === 'login' || view === 'register') && (
+            <motion.div
+              key={view}
+              initial={{ opacity: 0, scale: 0.98, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.98, y: -15 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+            >
+              <AuthForms 
+                view={view}
+                setView={setView}
+                authRole={authRole}
+                setAuthRole={setAuthRole}
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+                name={name}
+                setName={setName}
+                dob={dob}
+                setDob={setDob}
+                gender={gender}
+                setGender={setGender}
+                bloodGroup={bloodGroup}
+                setBloodGroup={setBloodGroup}
+                specialization={specialization}
+                setSpecialization={setSpecialization}
+                licenseNumber={licenseNumber}
+                setLicenseNumber={setLicenseNumber}
+                hospitalId={hospitalId}
+                setHospitalId={setHospitalId}
+                handleLogin={handleLogin}
+                handleRegister={handleRegister}
+              />
+            </motion.div>
+          )}
 
-        {view === 'patient-dashboard' && (
-          <PatientDashboard 
-            patientData={patientData}
-            uploadTitle={uploadTitle}
-            setUploadTitle={setUploadTitle}
-            uploadCategory={uploadCategory}
-            setUploadCategory={setUploadCategory}
-            uploadDesc={uploadDesc}
-            setUploadDesc={setUploadDesc}
-            uploadIsSensitive={uploadIsSensitive}
-            setUploadIsSensitive={setUploadIsSensitive}
-            uploadFile={uploadFile}
-            duplicateWarning={duplicateWarning}
-            editDob={editDob}
-            setEditDob={setEditDob}
-            editGender={editGender}
-            setEditGender={setEditGender}
-            editBlood={editBlood}
-            setEditBlood={setEditBlood}
-            editAllergies={editAllergies}
-            setEditAllergies={setEditAllergies}
-            editDiseases={editDiseases}
-            setEditDiseases={setEditDiseases}
-            editContactName={editContactName}
-            setEditContactName={setEditContactName}
-            editContactPhone={editContactPhone}
-            setEditContactPhone={setEditContactPhone}
-            editContactRelation={editContactRelation}
-            setEditContactRelation={setEditContactRelation}
-            isEditingProfile={isEditingProfile}
-            setIsEditingProfile={setIsEditingProfile}
-            handleUpdateProfile={handleUpdateProfile}
-            handleFileChange={handleFileChange}
-            handleUploadRecord={handleUploadRecord}
-            handleDeleteRecord={handleDeleteRecord}
-            handleRespondAccess={handleRespondAccess}
-            downloadFile={downloadFile}
-          />
-        )}
+          {view === 'patient-dashboard' && (
+            <motion.div
+              key="patient-dashboard"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+            >
+              <PatientDashboard 
+                patientData={patientData}
+                uploadTitle={uploadTitle}
+                setUploadTitle={setUploadTitle}
+                uploadCategory={uploadCategory}
+                setUploadCategory={setUploadCategory}
+                uploadDesc={uploadDesc}
+                setUploadDesc={setUploadDesc}
+                uploadIsSensitive={uploadIsSensitive}
+                setUploadIsSensitive={setUploadIsSensitive}
+                uploadFile={uploadFile}
+                duplicateWarning={duplicateWarning}
+                editDob={editDob}
+                setEditDob={setEditDob}
+                editGender={editGender}
+                setEditGender={setEditGender}
+                editBlood={editBlood}
+                setEditBlood={setEditBlood}
+                editAllergies={editAllergies}
+                setEditAllergies={setEditAllergies}
+                editDiseases={editDiseases}
+                setEditDiseases={setEditDiseases}
+                editContactName={editContactName}
+                setEditContactName={setEditContactName}
+                editContactPhone={editContactPhone}
+                setEditContactPhone={setEditContactPhone}
+                editContactRelation={editContactRelation}
+                setEditContactRelation={setEditContactRelation}
+                isEditingProfile={isEditingProfile}
+                setIsEditingProfile={setIsEditingProfile}
+                handleUpdateProfile={handleUpdateProfile}
+                handleFileChange={handleFileChange}
+                handleUploadRecord={handleUploadRecord}
+                handleDeleteRecord={handleDeleteRecord}
+                handleRespondAccess={handleRespondAccess}
+                downloadFile={downloadFile}
+              />
+            </motion.div>
+          )}
 
-        {view === 'doctor-dashboard' && (
-          <DoctorDashboard 
-            doctorData={doctorData}
-            searchId={searchId}
-            setSearchId={setSearchId}
-            searchedPatient={searchedPatient}
-            diagnosis={diagnosis}
-            setDiagnosis={setDiagnosis}
-            medsList={medsList}
-            addMedName={medName}
-            setAddMedName={setMedName}
-            addMedDosage={medDosage}
-            setAddMedDosage={setMedDosage}
-            addMedFreq={medFreq}
-            setAddMedFreq={setMedFreq}
-            addMedDur={medDur}
-            setAddMedDur={setMedDur}
-            handleAddMedication={handleAddMedication}
-            handleRemoveMedication={handleRemoveMedication}
-            handleSearchPatient={handleSearchPatient}
-            handleRequestAccess={handleRequestAccess}
-            handleAddPrescription={handleAddPrescription}
-            docUploadTitle={docUploadTitle}
-            setDocUploadTitle={setDocUploadTitle}
-            docUploadCategory={docUploadCategory}
-            setDocUploadCategory={setDocUploadCategory}
-            docUploadDesc={docUploadDesc}
-            setDocUploadDesc={setDocUploadDesc}
-            docUploadFile={docUploadFile}
-            handleFileChange={(e) => handleFileChange(e, true)}
-            handleDocUploadForPatient={handleDocUploadForPatient}
-            downloadFile={downloadFile}
-          />
-        )}
+          {view === 'doctor-dashboard' && (
+            <motion.div
+              key="doctor-dashboard"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+            >
+              <DoctorDashboard 
+                doctorData={doctorData}
+                searchId={searchId}
+                setSearchId={setSearchId}
+                searchedPatient={searchedPatient}
+                diagnosis={diagnosis}
+                setDiagnosis={setDiagnosis}
+                medsList={medsList}
+                addMedName={medName}
+                setAddMedName={setMedName}
+                addMedDosage={medDosage}
+                setAddMedDosage={setMedDosage}
+                addMedFreq={medFreq}
+                setAddMedFreq={setMedFreq}
+                addMedDur={medDur}
+                setAddMedDur={setMedDur}
+                handleAddMedication={handleAddMedication}
+                handleRemoveMedication={handleRemoveMedication}
+                handleSearchPatient={handleSearchPatient}
+                handleRequestAccess={handleRequestAccess}
+                handleAddPrescription={handleAddPrescription}
+                docUploadTitle={docUploadTitle}
+                setDocUploadTitle={setDocUploadTitle}
+                docUploadCategory={docUploadCategory}
+                setDocUploadCategory={setDocUploadCategory}
+                docUploadDesc={docUploadDesc}
+                setDocUploadDesc={setDocUploadDesc}
+                docUploadFile={docUploadFile}
+                handleFileChange={(e) => handleFileChange(e, true)}
+                handleDocUploadForPatient={handleDocUploadForPatient}
+                downloadFile={downloadFile}
+              />
+            </motion.div>
+          )}
 
-        {view === 'admin-dashboard' && (
-          <AdminDashboard 
-            adminData={adminData}
-            newHospitalName={newHospitalName}
-            setNewHospitalName={setNewHospitalName}
-            newHospitalAddress={newHospitalAddress}
-            setNewHospitalAddress={setNewHospitalAddress}
-            handleVerifyDoctor={handleVerifyDoctor}
-            handleAddHospital={handleAddHospital}
-          />
-        )}
+          {view === 'admin-dashboard' && (
+            <motion.div
+              key="admin-dashboard"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+            >
+              <AdminDashboard 
+                adminData={adminData}
+                newHospitalName={newHospitalName}
+                setNewHospitalName={setNewHospitalName}
+                newHospitalAddress={newHospitalAddress}
+                setNewHospitalAddress={setNewHospitalAddress}
+                handleVerifyDoctor={handleVerifyDoctor}
+                handleAddHospital={handleAddHospital}
+              />
+            </motion.div>
+          )}
 
-        {view === 'emergency-view' && (
-          <EmergencyView 
-            emergencyIdInput={emergencyIdInput}
-            setEmergencyIdInput={setEmergencyIdInput}
-            emergencyProfile={emergencyProfile}
-            handleLookupEmergency={handleLookupEmergency}
-          />
-        )}
+          {view === 'emergency-view' && (
+            <motion.div
+              key="emergency-view"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+            >
+              <EmergencyView 
+                emergencyIdInput={emergencyIdInput}
+                setEmergencyIdInput={setEmergencyIdInput}
+                emergencyProfile={emergencyProfile}
+                handleLookupEmergency={handleLookupEmergency}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       {/* Universal Footer */}
-      <footer className="bg-white border-t border-slate-100 py-8 text-center text-xs text-slate-400 mt-20">
-        <div className="max-w-7xl mx-auto px-4 space-y-1">
-          <p className="font-bold text-slate-500">Smart Interoperable Healthcare Record Management System (SIHRMS)</p>
-          <p>Secure clinical interoperability and centralized digital database storage. Adhering strictly to patient privacy mandates.</p>
-          <p className="text-[10px] text-slate-300 mt-2">© 2026 SIHRMS Organisation. All simulated medical transactions are highly encrypted.</p>
+      <footer className="border-t border-white/5 bg-[#090d23]/40 py-12 text-center text-xs text-slate-400 mt-20 backdrop-blur-md relative z-10">
+        <div className="max-w-7xl mx-auto px-4 space-y-3">
+          <div className="flex items-center justify-center space-x-2 text-white">
+            <Activity className="w-5 h-5 text-[#4f8cff]" />
+            <span className="font-display font-bold tracking-wider text-sm">SIHRMS SECURE SUITE</span>
+          </div>
+          <p className="max-w-md mx-auto text-slate-400 font-sans leading-relaxed">
+            Decentralized record timelines, zero-knowledge clinical clearance workflows, and instant medical interoperability ledger.
+          </p>
+          <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#4f8cff]/30 to-transparent mx-auto"></div>
+          <p className="text-[10px] text-slate-500 font-mono">
+            © 2026 SIHRMS Organisation. ALL DIGITAL PATIENT TRANSFERS FULLY ENCRYPTED.
+          </p>
         </div>
       </footer>
     </div>

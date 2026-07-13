@@ -67,25 +67,25 @@ export default function AuthForms({
       <motion.div 
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-3xl border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.03)] p-8 space-y-6"
+        className="glass-card rounded-3xl border border-white/10 p-8 space-y-6"
       >
         {/* Toggle Switch */}
         <div className="text-center space-y-2">
-          <span className="font-display text-2xl font-black tracking-tight text-slate-800">
+          <span className="font-display text-2xl font-black tracking-tight text-white block">
             {view === 'login' ? 'Welcome to SIHRMS' : 'Register Profile'}
           </span>
           <p className="text-[11px] font-medium text-slate-400">
             {view === 'login' ? 'Access your clinical database control room' : 'Set up your secure digital clinical registry'}
           </p>
           
-          <div className="flex justify-center p-1 bg-slate-50 border border-slate-100 rounded-xl mt-4">
+          <div className="flex justify-center p-1 bg-slate-950/50 border border-white/5 rounded-xl mt-4">
             <button 
               type="button"
               onClick={() => setAuthRole('patient')} 
               className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
                 authRole === 'patient' 
-                  ? 'bg-white text-teal-600 shadow-sm' 
-                  : 'text-slate-500 hover:text-slate-700'
+                  ? 'bg-gradient-to-tr from-[#4f8cff] to-[#7c5cff] text-white shadow-sm' 
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               Patient
@@ -95,8 +95,8 @@ export default function AuthForms({
               onClick={() => setAuthRole('doctor')} 
               className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
                 authRole === 'doctor' 
-                  ? 'bg-white text-teal-600 shadow-sm' 
-                  : 'text-slate-500 hover:text-slate-700'
+                  ? 'bg-gradient-to-tr from-[#4f8cff] to-[#7c5cff] text-white shadow-sm' 
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               Doctor
@@ -107,8 +107,8 @@ export default function AuthForms({
                 onClick={() => setAuthRole('admin')} 
                 className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
                   authRole === 'admin' 
-                    ? 'bg-white text-teal-600 shadow-sm' 
-                    : 'text-slate-500 hover:text-slate-700'
+                    ? 'bg-gradient-to-tr from-[#4f8cff] to-[#7c5cff] text-white shadow-sm' 
+                    : 'text-slate-400 hover:text-white'
                 }`}
               >
                 Admin
@@ -121,7 +121,7 @@ export default function AuthForms({
         <form onSubmit={view === 'login' ? handleLogin : handleRegister} className="space-y-4">
           {view === 'register' && (
             <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 font-mono">
                 Full Name
               </label>
               <div className="relative">
@@ -131,7 +131,7 @@ export default function AuthForms({
                   value={name} 
                   onChange={e => setName(e.target.value)} 
                   placeholder="e.g. John Doe" 
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-teal-500/80 focus:ring-4 focus:ring-teal-500/5 transition outline-none text-xs font-medium" 
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-[#090d23]/80 focus:border-[#4f8cff] focus:ring-4 focus:ring-[#4f8cff]/10 transition outline-none text-xs font-medium text-white placeholder-slate-500" 
                 />
                 <UserIcon className="absolute left-3.5 top-3.5 w-4.5 h-4.5 text-slate-400" />
               </div>
@@ -139,7 +139,7 @@ export default function AuthForms({
           )}
 
           <div>
-            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 font-mono">
               Email Address
             </label>
             <div className="relative">
@@ -149,14 +149,14 @@ export default function AuthForms({
                 value={email} 
                 onChange={e => setEmail(e.target.value)} 
                 placeholder="e.g. john@example.com" 
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-teal-500/80 focus:ring-4 focus:ring-teal-500/5 transition outline-none text-xs font-medium" 
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-[#090d23]/80 focus:border-[#4f8cff] focus:ring-4 focus:ring-[#4f8cff]/10 transition outline-none text-xs font-medium text-white placeholder-slate-500" 
               />
               <Mail className="absolute left-3.5 top-3.5 w-4.5 h-4.5 text-slate-400" />
             </div>
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 font-mono">
               Password
             </label>
             <div className="relative">
@@ -166,63 +166,63 @@ export default function AuthForms({
                 value={password} 
                 onChange={e => setPassword(e.target.value)} 
                 placeholder="••••••••" 
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-teal-500/80 focus:ring-4 focus:ring-teal-500/5 transition outline-none text-xs font-medium" 
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-[#090d23]/80 focus:border-[#4f8cff] focus:ring-4 focus:ring-[#4f8cff]/10 transition outline-none text-xs font-medium text-white placeholder-slate-500" 
               />
               <Lock className="absolute left-3.5 top-3.5 w-4.5 h-4.5 text-slate-400" />
             </div>
 
             {/* Password Validation Requirements Panel */}
             {view === 'register' && (
-              <div className="mt-2.5 p-3 bg-slate-50 border border-slate-100 rounded-xl space-y-1.5 text-[10px]">
-                <p className="font-semibold text-slate-500 text-[9px] uppercase tracking-wider mb-1">Password Requirements:</p>
+              <div className="mt-2.5 p-3 bg-slate-950/50 border border-white/5 rounded-xl space-y-1.5 text-[10px]">
+                <p className="font-semibold text-slate-400 text-[9px] uppercase tracking-wider mb-1 font-mono">Password Requirements:</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-1">
                   <div className="flex items-center gap-1.5">
                     <span className={`w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold ${
-                      hasMinLength ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 text-slate-500'
+                      hasMinLength ? 'bg-emerald-500/20 text-[#22c55e]' : 'bg-white/5 text-slate-500'
                     }`}>
                       {hasMinLength ? '✓' : '•'}
                     </span>
-                    <span className={hasMinLength ? 'text-emerald-700 font-medium' : 'text-slate-400'}>
+                    <span className={hasMinLength ? 'text-emerald-400 font-semibold' : 'text-slate-400'}>
                       Min 8 characters
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className={`w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold ${
-                      hasUppercase ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 text-slate-500'
+                      hasUppercase ? 'bg-emerald-500/20 text-[#22c55e]' : 'bg-white/5 text-slate-500'
                     }`}>
                       {hasUppercase ? '✓' : '•'}
                     </span>
-                    <span className={hasUppercase ? 'text-emerald-700 font-medium' : 'text-slate-400'}>
+                    <span className={hasUppercase ? 'text-emerald-400 font-semibold' : 'text-slate-400'}>
                       1 uppercase (A-Z)
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className={`w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold ${
-                      hasLowercase ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 text-slate-500'
+                      hasLowercase ? 'bg-emerald-500/20 text-[#22c55e]' : 'bg-white/5 text-slate-500'
                     }`}>
                       {hasLowercase ? '✓' : '•'}
                     </span>
-                    <span className={hasLowercase ? 'text-emerald-700 font-medium' : 'text-slate-400'}>
+                    <span className={hasLowercase ? 'text-emerald-400 font-semibold' : 'text-slate-400'}>
                       1 lowercase (a-z)
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className={`w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold ${
-                      hasNumber ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 text-slate-500'
+                      hasNumber ? 'bg-emerald-500/20 text-[#22c55e]' : 'bg-white/5 text-slate-500'
                     }`}>
                       {hasNumber ? '✓' : '•'}
                     </span>
-                    <span className={hasNumber ? 'text-emerald-700 font-medium' : 'text-slate-400'}>
+                    <span className={hasNumber ? 'text-emerald-400 font-semibold' : 'text-slate-400'}>
                       1 number (0-9)
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5 sm:col-span-2">
                     <span className={`w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold ${
-                      hasSpecial ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 text-slate-500'
+                      hasSpecial ? 'bg-emerald-500/20 text-[#22c55e]' : 'bg-white/5 text-slate-500'
                     }`}>
                       {hasSpecial ? '✓' : '•'}
                     </span>
-                    <span className={hasSpecial ? 'text-emerald-700 font-medium' : 'text-slate-400'}>
+                    <span className={hasSpecial ? 'text-emerald-400 font-semibold' : 'text-slate-400'}>
                       1 special char (!@#$%^&*())
                     </span>
                   </div>
@@ -233,85 +233,85 @@ export default function AuthForms({
 
           {/* Registration Role Metadata */}
           {view === 'register' && authRole === 'patient' && (
-            <div className="grid grid-cols-2 gap-3.5 p-4 bg-slate-50/50 border border-slate-100 rounded-2xl">
+            <div className="grid grid-cols-2 gap-3.5 p-4 bg-slate-950/50 border border-white/5 rounded-2xl">
               <div className="col-span-2">
-                <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Date of Birth</label>
+                <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1 font-mono">Date of Birth</label>
                 <div className="relative">
                   <input 
                     type="date" 
                     required
                     value={dob} 
                     onChange={e => setDob(e.target.value)} 
-                    className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-xs font-medium outline-none" 
+                    className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#090d23] text-xs font-medium outline-none text-white focus:border-[#4f8cff]" 
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Gender</label>
+                <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1 font-mono">Gender</label>
                 <select 
                   value={gender} 
                   onChange={e => setGender(e.target.value)} 
-                  className="w-full px-2 py-2.5 rounded-lg border border-slate-200 bg-white text-xs font-medium outline-none"
+                  className="w-full px-2 py-2.5 rounded-lg border border-white/10 bg-[#090d23] text-xs font-medium outline-none text-white focus:border-[#4f8cff]"
                 >
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Other</option>
+                  <option className="bg-[#050816]">Male</option>
+                  <option className="bg-[#050816]">Female</option>
+                  <option className="bg-[#050816]">Other</option>
                 </select>
               </div>
               <div>
-                <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Blood Group</label>
+                <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1 font-mono">Blood Group</label>
                 <select 
                   value={bloodGroup} 
                   onChange={e => setBloodGroup(e.target.value)} 
-                  className="w-full px-2 py-2.5 rounded-lg border border-slate-200 bg-white text-xs font-medium outline-none"
+                  className="w-full px-2 py-2.5 rounded-lg border border-white/10 bg-[#090d23] text-xs font-medium outline-none text-white focus:border-[#4f8cff]"
                 >
-                  <option>O-Positive</option>
-                  <option>O-Negative</option>
-                  <option>A-Positive</option>
-                  <option>A-Negative</option>
-                  <option>B-Positive</option>
-                  <option>B-Negative</option>
-                  <option>AB-Positive</option>
-                  <option>AB-Negative</option>
+                  <option className="bg-[#050816]">O-Positive</option>
+                  <option className="bg-[#050816]">O-Negative</option>
+                  <option className="bg-[#050816]">A-Positive</option>
+                  <option className="bg-[#050816]">A-Negative</option>
+                  <option className="bg-[#050816]">B-Positive</option>
+                  <option className="bg-[#050816]">B-Negative</option>
+                  <option className="bg-[#050816]">AB-Positive</option>
+                  <option className="bg-[#050816]">AB-Negative</option>
                 </select>
               </div>
             </div>
           )}
 
           {view === 'register' && authRole === 'doctor' && (
-            <div className="space-y-3.5 p-4 bg-slate-50/50 border border-slate-100 rounded-2xl">
+            <div className="space-y-3.5 p-4 bg-slate-950/50 border border-white/5 rounded-2xl">
               <div>
-                <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Clinical Specialization</label>
+                <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1 font-mono">Clinical Specialization</label>
                 <input 
                   type="text" 
                   required
                   placeholder="e.g. Cardiology, Pediatrics" 
                   value={specialization} 
                   onChange={e => setSpecialization(e.target.value)} 
-                  className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-xs font-medium outline-none" 
+                  className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#090d23] text-xs font-medium outline-none text-white placeholder-slate-500 focus:border-[#4f8cff]" 
                 />
               </div>
               <div>
-                <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Medical License ID</label>
+                <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1 font-mono">Medical License ID</label>
                 <input 
                   type="text" 
                   required
                   placeholder="e.g. LIC-12345" 
                   value={licenseNumber} 
                   onChange={e => setLicenseNumber(e.target.value)} 
-                  className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-xs font-mono font-medium outline-none" 
+                  className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#090d23] text-xs font-mono font-medium outline-none text-white placeholder-slate-500 focus:border-[#4f8cff]" 
                 />
               </div>
               <div>
-                <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Partner Hospital</label>
+                <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1 font-mono">Partner Hospital</label>
                 <select 
                   value={hospitalId} 
                   onChange={e => setHospitalId(e.target.value)} 
-                  className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-xs font-medium outline-none"
+                  className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#090d23] text-xs font-medium outline-none text-white focus:border-[#4f8cff]"
                 >
-                  <option value="HOSP-1">Saint Jude General Hospital</option>
-                  <option value="HOSP-2">Metropolis Medical Center</option>
-                  <option value="HOSP-3">Westcity Health Clinic</option>
+                  <option className="bg-[#050816]" value="HOSP-1">Saint Jude General Hospital</option>
+                  <option className="bg-[#050816]" value="HOSP-2">Metropolis Medical Center</option>
+                  <option className="bg-[#050816]" value="HOSP-3">Westcity Health Clinic</option>
                 </select>
               </div>
             </div>
@@ -319,20 +319,20 @@ export default function AuthForms({
 
           <button 
             type="submit" 
-            className="w-full bg-gradient-to-tr from-teal-600 to-emerald-500 hover:opacity-95 text-white shadow-md shadow-teal-600/15 py-3.5 rounded-xl text-xs font-bold tracking-wide transition-all hover:scale-[1.01] flex items-center justify-center gap-1.5"
+            className="w-full bg-gradient-to-r from-[#4f8cff] to-[#7c5cff] hover:opacity-95 text-white shadow-lg shadow-[#4f8cff]/25 py-3.5 rounded-xl text-xs font-bold tracking-wide transition-all hover:scale-[1.01] flex items-center justify-center gap-1.5 cursor-pointer"
           >
             {view === 'login' ? 'Access Database' : 'Register Profile'}
             <ChevronRight className="w-4 h-4" />
           </button>
         </form>
 
-        <div className="text-center text-xs text-slate-400 border-t border-slate-50 pt-4 font-medium">
+        <div className="text-center text-xs text-slate-400 border-t border-white/5 pt-4 font-medium">
           {view === 'login' ? (
             <>
               Don't have an account?{' '}
               <button 
                 onClick={() => setView('register')} 
-                className="text-teal-600 hover:underline font-bold"
+                className="text-[#4f8cff] hover:underline font-bold bg-transparent border-none cursor-pointer"
               >
                 Register as {authRole}
               </button>
@@ -342,7 +342,7 @@ export default function AuthForms({
               Already have an account?{' '}
               <button 
                 onClick={() => setView('login')} 
-                className="text-teal-600 hover:underline font-bold"
+                className="text-[#4f8cff] hover:underline font-bold bg-transparent border-none cursor-pointer"
               >
                 Login as {authRole}
               </button>
@@ -352,20 +352,20 @@ export default function AuthForms({
 
         {/* Demo Account Credentials (Frictionless discovery) */}
         {view === 'login' && (
-          <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-[10px] text-slate-500 space-y-1.5">
-            <span className="font-bold text-slate-700 block flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-teal-500" />
+          <div className="bg-[#0f172a]/60 border border-white/5 rounded-2xl p-4 text-[10px] text-slate-400 space-y-1.5">
+            <span className="font-bold text-white block flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5 text-[#4f8cff]" />
               Developer Sandbox Access:
             </span>
             <ul className="space-y-1 font-mono text-[9px]">
               <li>
-                <span className="font-bold text-slate-600">Patient:</span> john.doe@gmail.com / patient123
+                <span className="font-bold text-slate-300">Patient:</span> john.doe@gmail.com / patient123
               </li>
               <li>
-                <span className="font-bold text-slate-600">Doctor:</span> dr.smith@metro.org / doctor123
+                <span className="font-bold text-slate-300">Doctor:</span> dr.smith@metro.org / doctor123
               </li>
               <li>
-                <span className="font-bold text-slate-600">Admin:</span> admin@sihrms.org / admin123
+                <span className="font-bold text-slate-300">Admin:</span> admin@sihrms.org / admin123
               </li>
             </ul>
           </div>

@@ -24,6 +24,10 @@ export interface Patient {
   emergencyContactPhone: string;
   emergencyContactRelation: string;
   isEmergencyProfileComplete: boolean;
+  phone?: string;
+  height?: string;
+  weight?: string;
+  currentMedications?: string;
 }
 
 export interface Doctor {
@@ -33,6 +37,13 @@ export interface Doctor {
   hospitalId: string;
   hospitalName: string;
   isVerified: boolean;
+  phone?: string;
+  profilePicture?: string;
+  about?: string;
+  experience?: string;
+  department?: string;
+  joinedDate?: string;
+  patientsTreated?: number;
 }
 
 export interface Hospital {
@@ -200,7 +211,11 @@ const getInitialDatabase = (): DatabaseSchema => {
       emergencyContactName: 'Jane Doe',
       emergencyContactPhone: '+1 (555) 987-6543',
       emergencyContactRelation: 'Spouse',
-      isEmergencyProfileComplete: true
+      isEmergencyProfileComplete: true,
+      phone: '+1 (555) 543-2109',
+      height: '180 cm',
+      weight: '78 kg',
+      currentMedications: 'Lisinopril 10mg (once daily), Multivitamins'
     }
   ];
 
@@ -211,7 +226,14 @@ const getInitialDatabase = (): DatabaseSchema => {
       licenseNumber: 'LIC-774920',
       hospitalId: 'HOSP-1',
       hospitalName: 'Metro General Hospital',
-      isVerified: true
+      isVerified: true,
+      phone: '+1 (555) 234-5678',
+      profilePicture: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300',
+      about: 'Senior Cardiologist with over 15 years of experience in cardiovascular diseases, cardiac imaging, and preventive medicine.',
+      experience: '15 years',
+      department: 'Cardiology Department',
+      joinedDate: '2021-03-15',
+      patientsTreated: 124
     },
     {
       userId: 'USR-DOC2',
@@ -219,7 +241,14 @@ const getInitialDatabase = (): DatabaseSchema => {
       licenseNumber: 'LIC-883019',
       hospitalId: 'HOSP-2',
       hospitalName: 'Saint Jude Medical Center',
-      isVerified: false // Requires admin verification!
+      isVerified: false, // Requires admin verification!
+      phone: '+1 (555) 876-5432',
+      profilePicture: 'https://images.unsplash.com/photo-1594824813573-246434de83fb?auto=format&fit=crop&q=80&w=300',
+      about: 'Neurologist specialized in cognitive neurology, headache disorders, and neuro-rehabilitation.',
+      experience: '8 years',
+      department: 'Neurology Department',
+      joinedDate: '2023-08-10',
+      patientsTreated: 52
     }
   ];
 
@@ -455,6 +484,26 @@ class DatabaseManager {
       this.schema.patients[idx] = { ...this.schema.patients[idx], ...updates };
       this.persist();
       return this.schema.patients[idx];
+    }
+    return null;
+  }
+
+  updateDoctor(userId: string, updates: Partial<Doctor>) {
+    const idx = this.schema.doctors.findIndex(d => d.userId === userId);
+    if (idx !== -1) {
+      this.schema.doctors[idx] = { ...this.schema.doctors[idx], ...updates };
+      this.persist();
+      return this.schema.doctors[idx];
+    }
+    return null;
+  }
+
+  updateUser(userId: string, updates: Partial<User>) {
+    const idx = this.schema.users.findIndex(u => u.id === userId);
+    if (idx !== -1) {
+      this.schema.users[idx] = { ...this.schema.users[idx], ...updates };
+      this.persist();
+      return this.schema.users[idx];
     }
     return null;
   }

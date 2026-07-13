@@ -63,6 +63,10 @@ export interface Patient {
   emergencyContactPhone: string;
   emergencyContactRelation: string;
   isEmergencyProfileComplete: boolean;
+  phone?: string;
+  height?: string;
+  weight?: string;
+  currentMedications?: string;
 }
 
 export interface Doctor {
@@ -72,4 +76,11 @@ export interface Doctor {
   specialization: string;
   licenseNumber: string;
   isVerified: boolean;
+  phone?: string;
+  profilePicture?: string;
+  about?: string;
+  experience?: string;
+  department?: string;
+  joinedDate?: string;
+  patientsTreated?: number;
 }
