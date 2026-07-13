@@ -521,11 +521,38 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#050816] text-white relative overflow-hidden cyber-grid">
+    <div className="min-h-screen flex flex-col bg-[#020617]/50 text-white relative overflow-hidden">
       
-      {/* Decorative ambient glowing backdrops */}
-      <div className="absolute top-[-10%] left-[10%] w-[500px] h-[500px] bg-[#4f8cff]/10 rounded-full blur-[150px] pointer-events-none animate-pulse-glow" />
-      <div className="absolute bottom-[-10%] right-[10%] w-[500px] h-[500px] bg-[#7c5cff]/8 rounded-full blur-[150px] pointer-events-none animate-pulse-glow" style={{ animationDelay: '2s' }} />
+      {/* Glowing Mesh Circles (Layer 2) */}
+      <div className="absolute top-[-10%] left-[5%] w-[600px] h-[600px] bg-[#38bdf8]/12 rounded-full blur-[130px] pointer-events-none animate-pulse-glow" />
+      <div className="absolute bottom-[-10%] right-[5%] w-[600px] h-[600px] bg-[#22d3ee]/10 rounded-full blur-[130px] pointer-events-none animate-pulse-glow" style={{ animationDelay: '2s' }} />
+      <div className="absolute top-[40%] left-[45%] w-[350px] h-[350px] bg-[#14f195]/6 rounded-full blur-[100px] pointer-events-none animate-pulse-glow" style={{ animationDelay: '4s' }} />
+
+      {/* Floating Sparkles & Clinical Ledger Particles (Layer 3) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-[#38bdf8]/20"
+            style={{
+              width: (i % 3 === 0 ? '6px' : i % 2 === 0 ? '4px' : '2.5px'),
+              height: (i % 3 === 0 ? '6px' : i % 2 === 0 ? '4px' : '2.5px'),
+              top: (15 + (i * 5.3) % 80) + '%',
+              left: (10 + (i * 6.7) % 80) + '%',
+            }}
+            animate={{
+              y: [0, -60, -120, -60, 0],
+              x: [0, 20, -20, 10, 0],
+              opacity: [0.15, 0.7, 0.15],
+            }}
+            transition={{
+              duration: 18 + (i * 2) % 15,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
 
       {/* Toast Alert Widget */}
       <Toast toast={toast} onClose={() => setToast(null)} />
@@ -553,7 +580,7 @@ export default function App() {
               <Activity className="w-6 h-6 text-[#4f8cff] animate-pulse" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-white tracking-wider uppercase font-display">SIHRMS Secure Engine</p>
+              <p className="text-sm font-semibold text-white tracking-wider uppercase font-display">HealthOrbit Secure Engine</p>
               <p className="text-xs text-slate-400 mt-1">Synchronizing clinical ledger ledger...</p>
             </div>
             <div className="w-full bg-slate-950/50 rounded-full h-1 overflow-hidden">
@@ -750,14 +777,14 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 space-y-3">
           <div className="flex items-center justify-center space-x-2 text-white">
             <Activity className="w-5 h-5 text-[#4f8cff]" />
-            <span className="font-display font-bold tracking-wider text-sm">SIHRMS SECURE SUITE</span>
+            <span className="font-display font-bold tracking-wider text-sm">HEALTHORBIT SECURE SUITE</span>
           </div>
           <p className="max-w-md mx-auto text-slate-400 font-sans leading-relaxed">
             Decentralized record timelines, zero-knowledge clinical clearance workflows, and instant medical interoperability ledger.
           </p>
           <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#4f8cff]/30 to-transparent mx-auto"></div>
           <p className="text-[10px] text-slate-500 font-mono">
-            © 2026 SIHRMS Organisation. ALL DIGITAL PATIENT TRANSFERS FULLY ENCRYPTED.
+            © 2026 HealthOrbit Organisation. ALL DIGITAL PATIENT TRANSFERS FULLY ENCRYPTED.
           </p>
         </div>
       </footer>

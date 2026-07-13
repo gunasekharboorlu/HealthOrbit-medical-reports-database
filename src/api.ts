@@ -1,4 +1,4 @@
-// Client-side API helper for SIHRMS
+// Client-side API helper for HealthOrbit
 
 const API_BASE = '/api';
 

@@ -1,0 +1,269 @@
+{
+  "users": [
+    {
+      "id": "USR-ADMIN",
+      "email": "admin@healthorbit.org",
+      "passwordHash": "$2b$10$6ZUukIh8ASL4Dhv5F/IexuGAaRh2Uk.TqN1ic2gUvTlcWXJw2uoJO",
+      "role": "admin",
+      "name": "Sarah Jenkins",
+      "createdAt": "2026-06-13T08:22:43.795Z"
+    },
+    {
+      "id": "USR-DOC1",
+      "email": "dr.smith@metro.org",
+      "passwordHash": "$2b$10$6ZUukIh8ASL4Dhv5F/IexugzVoxO8CsBn5MnVaX7vrggm4bTyistu",
+      "role": "doctor",
+      "name": "Dr. Robert Smith",
+      "createdAt": "2026-06-18T08:22:43.796Z"
+    },
+    {
+      "id": "USR-DOC2",
+      "email": "dr.chen@stjude.org",
+      "passwordHash": "$2b$10$6ZUukIh8ASL4Dhv5F/IexugzVoxO8CsBn5MnVaX7vrggm4bTyistu",
+      "role": "doctor",
+      "name": "Dr. Lisa Chen",
+      "createdAt": "2026-06-28T08:22:43.796Z"
+    },
+    {
+      "id": "USR-PAT1",
+      "email": "john.doe@gmail.com",
+      "passwordHash": "$2b$10$6ZUukIh8ASL4Dhv5F/IexuALmsN5jweYussPcRyLmsY.5u8LLy5gO",
+      "role": "patient",
+      "name": "John Doe",
+      "createdAt": "2026-06-23T08:22:43.796Z"
+    }
+  ],
+  "patients": [
+    {
+      "userId": "USR-PAT1",
+      "patientId": "PAT-100001",
+      "dob": "1988-05-14",
+      "gender": "Male",
+      "bloodGroup": "O-Positive",
+      "allergies": "Penicillin, Shellfish",
+      "chronicDiseases": "Hypertension",
+      "emergencyContactName": "Jane Doe",
+      "emergencyContactPhone": "+1 (555) 987-6543",
+      "emergencyContactRelation": "Spouse",
+      "isEmergencyProfileComplete": true,
+      "phone": "+1 (555) 543-2109",
+      "height": "180 cm",
+      "weight": "78 kg",
+      "currentMedications": "Lisinopril 10mg (once daily), Multivitamins"
+    }
+  ],
+  "doctors": [
+    {
+      "userId": "USR-DOC1",
+      "specialization": "Cardiology",
+      "licenseNumber": "LIC-774920",
+      "hospitalId": "HOSP-1",
+      "hospitalName": "Metro General Hospital",
+      "isVerified": true,
+      "phone": "+1 (555) 234-5678",
+      "profilePicture": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300",
+      "about": "Senior Cardiologist with over 15 years of experience in cardiovascular diseases, cardiac imaging, and preventive medicine.",
+      "experience": "15 years",
+      "department": "Cardiology Department",
+      "joinedDate": "2021-03-15",
+      "patientsTreated": 124
+    },
+    {
+      "userId": "USR-DOC2",
+      "specialization": "Neurology",
+      "licenseNumber": "LIC-883019",
+      "hospitalId": "HOSP-2",
+      "hospitalName": "Saint Jude Medical Center",
+      "isVerified": false,
+      "phone": "+1 (555) 876-5432",
+      "profilePicture": "https://images.unsplash.com/photo-1594824813573-246434de83fb?auto=format&fit=crop&q=80&w=300",
+      "about": "Neurologist specialized in cognitive neurology, headache disorders, and neuro-rehabilitation.",
+      "experience": "8 years",
+      "department": "Neurology Department",
+      "joinedDate": "2023-08-10",
+      "patientsTreated": 52
+    }
+  ],
+  "hospitals": [
+    {
+      "id": "HOSP-1",
+      "name": "Metro General Hospital",
+      "address": "123 Health Ave, Metro City",
+      "verified": true
+    },
+    {
+      "id": "HOSP-2",
+      "name": "Saint Jude Medical Center",
+      "address": "55 Medical Plaza, Green Hills",
+      "verified": true
+    },
+    {
+      "id": "HOSP-3",
+      "name": "Valley Childrens Clinic",
+      "address": "89 Hope Street, Riverdale",
+      "verified": false
+    }
+  ],
+  "medicalRecords": [
+    {
+      "id": "REC-1",
+      "patientId": "PAT-100001",
+      "uploadedByUserId": "USR-DOC1",
+      "uploadedByRole": "doctor",
+      "uploadedByName": "Dr. Robert Smith",
+      "uploadedByHospitalId": "HOSP-1",
+      "title": "Electrocardiogram (ECG) Report",
+      "description": "Patient presented with mild chest tightness. ECG shows normal sinus rhythm with no ST elevation.",
+      "category": "Lab Report",
+      "fileName": "ecg_report_john_doe.pdf",
+      "fileSize": "145 KB",
+      "fileContent": "MOCK_PDF_BASE64_ECG",
+      "fileHash": "4afd915b",
+      "isSensitive": false,
+      "createdAt": "2026-07-03T08:22:43.796Z",
+      "trustBadge": "verified_hospital"
+    },
+    {
+      "id": "REC-2",
+      "patientId": "PAT-100001",
+      "uploadedByUserId": "USR-PAT1",
+      "uploadedByRole": "patient",
+      "uploadedByName": "John Doe",
+      "title": "Blood Cholesterol Panel",
+      "description": "Annual wellness checkup. Cholesterol level is slightly elevated at 210 mg/dL.",
+      "category": "Lab Report",
+      "fileName": "blood_cholesterol_results.png",
+      "fileSize": "312 KB",
+      "fileContent": "MOCK_PNG_BASE64_BLOOD",
+      "fileHash": "19d7708b",
+      "isSensitive": true,
+      "createdAt": "2026-07-08T08:22:43.796Z",
+      "trustBadge": "patient_direct"
+    },
+    {
+      "id": "REC-3",
+      "patientId": "PAT-100001",
+      "uploadedByUserId": "USR-DOC1",
+      "uploadedByRole": "doctor",
+      "uploadedByName": "Dr. Robert Smith",
+      "uploadedByHospitalId": "HOSP-1",
+      "title": "Brain MRI Scan",
+      "description": "Post-concussion screening. High-resolution scan shows zero structural lesions or hemorrhage.",
+      "category": "Scan",
+      "fileName": "brain_mri_scan.pdf",
+      "fileSize": "1.2 MB",
+      "fileContent": "MOCK_PDF_BASE64_MRI",
+      "fileHash": "4afdb136",
+      "isSensitive": true,
+      "createdAt": "2026-07-05T08:22:43.796Z",
+      "trustBadge": "verified_hospital"
+    }
+  ],
+  "prescriptions": [
+    {
+      "id": "PRSC-1",
+      "patientId": "PAT-100001",
+      "doctorId": "USR-DOC1",
+      "doctorName": "Dr. Robert Smith",
+      "hospitalName": "Metro General Hospital",
+      "diagnosis": "Mild Hypertension & Fatigue",
+      "medications": [
+        {
+          "name": "Lisinopril",
+          "dosage": "10mg",
+          "frequency": "Once daily in the morning",
+          "duration": "30 Days"
+        },
+        {
+          "name": "Coenzyme Q10",
+          "dosage": "100mg",
+          "frequency": "Once daily with meal",
+          "duration": "60 Days"
+        }
+      ],
+      "createdAt": "2026-07-03T08:22:43.796Z"
+    }
+  ],
+  "accessRequests": [
+    {
+      "id": "REQ-1",
+      "patientId": "PAT-100001",
+      "doctorId": "USR-DOC1",
+      "doctorName": "Dr. Robert Smith",
+      "doctorSpecialization": "Cardiology",
+      "hospitalName": "Metro General Hospital",
+      "recordId": "REC-3",
+      "recordTitle": "Brain MRI Scan",
+      "status": "approved",
+      "requestedAt": "2026-07-09T08:22:43.796Z",
+      "respondedAt": "2026-07-10T08:22:43.796Z"
+    },
+    {
+      "id": "REQ-2",
+      "patientId": "PAT-100001",
+      "doctorId": "USR-DOC1",
+      "doctorName": "Dr. Robert Smith",
+      "doctorSpecialization": "Cardiology",
+      "hospitalName": "Metro General Hospital",
+      "recordId": "REC-2",
+      "recordTitle": "Blood Cholesterol Panel",
+      "status": "pending",
+      "requestedAt": "2026-07-12T08:22:43.796Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "NOT-1",
+      "userId": "USR-PAT1",
+      "title": "New Access Request",
+      "message": "Dr. Robert Smith is requesting access to your sensitive medical record: \"Blood Cholesterol Panel\".",
+      "read": false,
+      "createdAt": "2026-07-12T08:22:43.796Z"
+    },
+    {
+      "id": "NOT-2",
+      "userId": "USR-PAT1",
+      "title": "Access Request Approved",
+      "message": "You have granted Dr. Robert Smith access to your record: \"Brain MRI Scan\".",
+      "read": true,
+      "createdAt": "2026-07-10T08:22:43.796Z"
+    },
+    {
+      "id": "NOT-3",
+      "userId": "USR-DOC2",
+      "title": "Account Registration Successful",
+      "message": "Your doctor account has been registered and is pending verification from the Hospital Administrator.",
+      "read": false,
+      "createdAt": "2026-06-28T08:22:43.796Z"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "LOG-1",
+      "userId": "USR-PAT1",
+      "userName": "John Doe",
+      "userRole": "patient",
+      "action": "RECORD_UPLOAD",
+      "details": "Uploaded self-recorded Lab Report: \"Blood Cholesterol Panel\" marked as Sensitive.",
+      "timestamp": "2026-07-08T08:22:43.796Z"
+    },
+    {
+      "id": "LOG-2",
+      "userId": "USR-DOC1",
+      "userName": "Dr. Robert Smith",
+      "userRole": "doctor",
+      "action": "RECORD_VIEW",
+      "details": "Viewed ECG Report for Patient PAT-100001.",
+      "timestamp": "2026-07-04T08:22:43.796Z"
+    },
+    {
+      "id": "LOG-3",
+      "userId": "USR-PAT1",
+      "userName": "John Doe",
+      "userRole": "patient",
+      "action": "ACCESS_APPROVE",
+      "details": "Approved Dr. Robert Smith access request for Brain MRI Scan.",
+      "timestamp": "2026-07-10T08:22:43.796Z"
+    }
+  ]
+}

@@ -116,7 +116,7 @@ export default function PatientDashboard({
           
           <div className="space-y-3 relative z-10">
             <span className="inline-flex items-center gap-1.5 bg-[#4f8cff]/10 border border-[#4f8cff]/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-[#5da9ff]">
-              <Sparkles className="w-3.5 h-3.5" /> SIHRMS Medical Core Hub
+              <Sparkles className="w-3.5 h-3.5" /> HealthOrbit Patient Vault
             </span>
             <h2 className="font-display text-3xl sm:text-4.5xl font-black tracking-tight leading-tight">
               Welcome Back, <span className="bg-gradient-to-r from-white via-[#86b0ff] to-[#5da9ff] bg-clip-text text-transparent">{patientData.name || 'Patient'}</span>

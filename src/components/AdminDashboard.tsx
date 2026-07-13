@@ -39,7 +39,7 @@ export default function AdminDashboard({
             <Sparkles className="w-3.5 h-3.5" /> Core Network Controller
           </span>
           <h2 className="font-display text-2xl sm:text-4.5xl font-black tracking-tight">System Controller Console</h2>
-          <p className="text-xs text-slate-300">SIHRMS Universal Health Registry Network Controller & Audit Core</p>
+          <p className="text-xs text-slate-300">HealthOrbit Global Health Registry Network Controller & Audit Core</p>
         </div>
       </div>
 

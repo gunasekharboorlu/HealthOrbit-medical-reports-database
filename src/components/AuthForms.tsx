@@ -72,7 +72,7 @@ export default function AuthForms({
         {/* Toggle Switch */}
         <div className="text-center space-y-2">
           <span className="font-display text-2xl font-black tracking-tight text-white block">
-            {view === 'login' ? 'Welcome to SIHRMS' : 'Register Profile'}
+            {view === 'login' ? 'Welcome to HealthOrbit' : 'Register Profile'}
           </span>
           <p className="text-[11px] font-medium text-slate-400">
             {view === 'login' ? 'Access your clinical database control room' : 'Set up your secure digital clinical registry'}
@@ -84,7 +84,7 @@ export default function AuthForms({
               onClick={() => setAuthRole('patient')} 
               className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
                 authRole === 'patient' 
-                  ? 'bg-gradient-to-tr from-[#4f8cff] to-[#7c5cff] text-white shadow-sm' 
+                  ? 'bg-gradient-to-tr from-[#38bdf8] to-[#22d3ee] text-slate-950 shadow-sm' 
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -95,7 +95,7 @@ export default function AuthForms({
               onClick={() => setAuthRole('doctor')} 
               className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
                 authRole === 'doctor' 
-                  ? 'bg-gradient-to-tr from-[#4f8cff] to-[#7c5cff] text-white shadow-sm' 
+                  ? 'bg-gradient-to-tr from-[#38bdf8] to-[#22d3ee] text-slate-950 shadow-sm' 
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -107,7 +107,7 @@ export default function AuthForms({
                 onClick={() => setAuthRole('admin')} 
                 className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
                   authRole === 'admin' 
-                    ? 'bg-gradient-to-tr from-[#4f8cff] to-[#7c5cff] text-white shadow-sm' 
+                    ? 'bg-gradient-to-tr from-[#38bdf8] to-[#22d3ee] text-slate-950 shadow-sm' 
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -131,7 +131,7 @@ export default function AuthForms({
                   value={name} 
                   onChange={e => setName(e.target.value)} 
                   placeholder="e.g. John Doe" 
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-[#090d23]/80 focus:border-[#4f8cff] focus:ring-4 focus:ring-[#4f8cff]/10 transition outline-none text-xs font-medium text-white placeholder-slate-500" 
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-[#0c1425]/80 focus:border-[#38bdf8] focus:ring-4 focus:ring-[#38bdf8]/10 transition outline-none text-xs font-medium text-white placeholder-slate-500" 
                 />
                 <UserIcon className="absolute left-3.5 top-3.5 w-4.5 h-4.5 text-slate-400" />
               </div>
@@ -149,7 +149,7 @@ export default function AuthForms({
                 value={email} 
                 onChange={e => setEmail(e.target.value)} 
                 placeholder="e.g. john@example.com" 
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-[#090d23]/80 focus:border-[#4f8cff] focus:ring-4 focus:ring-[#4f8cff]/10 transition outline-none text-xs font-medium text-white placeholder-slate-500" 
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-[#0c1425]/80 focus:border-[#38bdf8] focus:ring-4 focus:ring-[#38bdf8]/10 transition outline-none text-xs font-medium text-white placeholder-slate-500" 
               />
               <Mail className="absolute left-3.5 top-3.5 w-4.5 h-4.5 text-slate-400" />
             </div>
@@ -166,7 +166,7 @@ export default function AuthForms({
                 value={password} 
                 onChange={e => setPassword(e.target.value)} 
                 placeholder="••••••••" 
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-[#090d23]/80 focus:border-[#4f8cff] focus:ring-4 focus:ring-[#4f8cff]/10 transition outline-none text-xs font-medium text-white placeholder-slate-500" 
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-[#0c1425]/80 focus:border-[#38bdf8] focus:ring-4 focus:ring-[#38bdf8]/10 transition outline-none text-xs font-medium text-white placeholder-slate-500" 
               />
               <Lock className="absolute left-3.5 top-3.5 w-4.5 h-4.5 text-slate-400" />
             </div>
@@ -233,7 +233,7 @@ export default function AuthForms({
 
           {/* Registration Role Metadata */}
           {view === 'register' && authRole === 'patient' && (
-            <div className="grid grid-cols-2 gap-3.5 p-4 bg-slate-950/50 border border-white/5 rounded-2xl">
+            <div className="grid grid-cols-2 gap-3.5 p-4 bg-[#0c1425]/60 border border-white/5 rounded-2xl">
               <div className="col-span-2">
                 <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1 font-mono">Date of Birth</label>
                 <div className="relative">
@@ -242,7 +242,7 @@ export default function AuthForms({
                     required
                     value={dob} 
                     onChange={e => setDob(e.target.value)} 
-                    className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#090d23] text-xs font-medium outline-none text-white focus:border-[#4f8cff]" 
+                    className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#0c1425] text-xs font-medium outline-none text-white focus:border-[#38bdf8]" 
                   />
                 </div>
               </div>
@@ -251,11 +251,11 @@ export default function AuthForms({
                 <select 
                   value={gender} 
                   onChange={e => setGender(e.target.value)} 
-                  className="w-full px-2 py-2.5 rounded-lg border border-white/10 bg-[#090d23] text-xs font-medium outline-none text-white focus:border-[#4f8cff]"
+                  className="w-full px-2 py-2.5 rounded-lg border border-white/10 bg-[#0c1425] text-xs font-medium outline-none text-white focus:border-[#38bdf8]"
                 >
-                  <option className="bg-[#050816]">Male</option>
-                  <option className="bg-[#050816]">Female</option>
-                  <option className="bg-[#050816]">Other</option>
+                  <option className="bg-[#020617]">Male</option>
+                  <option className="bg-[#020617]">Female</option>
+                  <option className="bg-[#020617]">Other</option>
                 </select>
               </div>
               <div>
@@ -263,23 +263,23 @@ export default function AuthForms({
                 <select 
                   value={bloodGroup} 
                   onChange={e => setBloodGroup(e.target.value)} 
-                  className="w-full px-2 py-2.5 rounded-lg border border-white/10 bg-[#090d23] text-xs font-medium outline-none text-white focus:border-[#4f8cff]"
+                  className="w-full px-2 py-2.5 rounded-lg border border-white/10 bg-[#0c1425] text-xs font-medium outline-none text-white focus:border-[#38bdf8]"
                 >
-                  <option className="bg-[#050816]">O-Positive</option>
-                  <option className="bg-[#050816]">O-Negative</option>
-                  <option className="bg-[#050816]">A-Positive</option>
-                  <option className="bg-[#050816]">A-Negative</option>
-                  <option className="bg-[#050816]">B-Positive</option>
-                  <option className="bg-[#050816]">B-Negative</option>
-                  <option className="bg-[#050816]">AB-Positive</option>
-                  <option className="bg-[#050816]">AB-Negative</option>
+                  <option className="bg-[#020617]">O-Positive</option>
+                  <option className="bg-[#020617]">O-Negative</option>
+                  <option className="bg-[#020617]">A-Positive</option>
+                  <option className="bg-[#020617]">A-Negative</option>
+                  <option className="bg-[#020617]">B-Positive</option>
+                  <option className="bg-[#020617]">B-Negative</option>
+                  <option className="bg-[#020617]">AB-Positive</option>
+                  <option className="bg-[#020617]">AB-Negative</option>
                 </select>
               </div>
             </div>
           )}
 
           {view === 'register' && authRole === 'doctor' && (
-            <div className="space-y-3.5 p-4 bg-slate-950/50 border border-white/5 rounded-2xl">
+            <div className="space-y-3.5 p-4 bg-[#0c1425]/60 border border-white/5 rounded-2xl">
               <div>
                 <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1 font-mono">Clinical Specialization</label>
                 <input 
@@ -288,7 +288,7 @@ export default function AuthForms({
                   placeholder="e.g. Cardiology, Pediatrics" 
                   value={specialization} 
                   onChange={e => setSpecialization(e.target.value)} 
-                  className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#090d23] text-xs font-medium outline-none text-white placeholder-slate-500 focus:border-[#4f8cff]" 
+                  className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#0c1425] text-xs font-medium outline-none text-white placeholder-slate-500 focus:border-[#38bdf8]" 
                 />
               </div>
               <div>
@@ -299,7 +299,7 @@ export default function AuthForms({
                   placeholder="e.g. LIC-12345" 
                   value={licenseNumber} 
                   onChange={e => setLicenseNumber(e.target.value)} 
-                  className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#090d23] text-xs font-mono font-medium outline-none text-white placeholder-slate-500 focus:border-[#4f8cff]" 
+                  className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#0c1425] text-xs font-mono font-medium outline-none text-white placeholder-slate-500 focus:border-[#38bdf8]" 
                 />
               </div>
               <div>
@@ -307,11 +307,11 @@ export default function AuthForms({
                 <select 
                   value={hospitalId} 
                   onChange={e => setHospitalId(e.target.value)} 
-                  className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#090d23] text-xs font-medium outline-none text-white focus:border-[#4f8cff]"
+                  className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#0c1425] text-xs font-medium outline-none text-white focus:border-[#38bdf8]"
                 >
-                  <option className="bg-[#050816]" value="HOSP-1">Saint Jude General Hospital</option>
-                  <option className="bg-[#050816]" value="HOSP-2">Metropolis Medical Center</option>
-                  <option className="bg-[#050816]" value="HOSP-3">Westcity Health Clinic</option>
+                  <option className="bg-[#020617]" value="HOSP-1">Saint Jude General Hospital</option>
+                  <option className="bg-[#020617]" value="HOSP-2">Metropolis Medical Center</option>
+                  <option className="bg-[#020617]" value="HOSP-3">Westcity Health Clinic</option>
                 </select>
               </div>
             </div>
@@ -319,10 +319,10 @@ export default function AuthForms({
 
           <button 
             type="submit" 
-            className="w-full bg-gradient-to-r from-[#4f8cff] to-[#7c5cff] hover:opacity-95 text-white shadow-lg shadow-[#4f8cff]/25 py-3.5 rounded-xl text-xs font-bold tracking-wide transition-all hover:scale-[1.01] flex items-center justify-center gap-1.5 cursor-pointer"
+            className="w-full bg-gradient-to-r from-[#38bdf8] to-[#22d3ee] hover:opacity-95 text-slate-950 shadow-lg shadow-[#38bdf8]/25 py-3.5 rounded-xl text-xs font-black tracking-wide transition-all hover:scale-[1.01] flex items-center justify-center gap-1.5 cursor-pointer"
           >
             {view === 'login' ? 'Access Database' : 'Register Profile'}
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4 text-slate-950 stroke-[3]" />
           </button>
         </form>
 
@@ -332,7 +332,7 @@ export default function AuthForms({
               Don't have an account?{' '}
               <button 
                 onClick={() => setView('register')} 
-                className="text-[#4f8cff] hover:underline font-bold bg-transparent border-none cursor-pointer"
+                className="text-[#38bdf8] hover:underline font-bold bg-transparent border-none cursor-pointer"
               >
                 Register as {authRole}
               </button>
@@ -342,7 +342,7 @@ export default function AuthForms({
               Already have an account?{' '}
               <button 
                 onClick={() => setView('login')} 
-                className="text-[#4f8cff] hover:underline font-bold bg-transparent border-none cursor-pointer"
+                className="text-[#38bdf8] hover:underline font-bold bg-transparent border-none cursor-pointer"
               >
                 Login as {authRole}
               </button>
@@ -352,9 +352,9 @@ export default function AuthForms({
 
         {/* Demo Account Credentials (Frictionless discovery) */}
         {view === 'login' && (
-          <div className="bg-[#0f172a]/60 border border-white/5 rounded-2xl p-4 text-[10px] text-slate-400 space-y-1.5">
+          <div className="bg-[#0c1425]/60 border border-white/5 rounded-2xl p-4 text-[10px] text-slate-400 space-y-1.5">
             <span className="font-bold text-white block flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-[#4f8cff]" />
+              <Sparkles className="w-3.5 h-3.5 text-[#38bdf8]" />
               Developer Sandbox Access:
             </span>
             <ul className="space-y-1 font-mono text-[9px]">
@@ -365,7 +365,7 @@ export default function AuthForms({
                 <span className="font-bold text-slate-300">Doctor:</span> dr.smith@metro.org / doctor123
               </li>
               <li>
-                <span className="font-bold text-slate-300">Admin:</span> admin@sihrms.org / admin123
+                <span className="font-bold text-slate-300">Admin:</span> admin@healthorbit.org / admin123
               </li>
             </ul>
           </div>

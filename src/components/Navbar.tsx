@@ -30,7 +30,7 @@ export default function Navbar({
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-white/5 bg-[#050816]/75 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-white/5 bg-[#020617]/50 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           
@@ -39,12 +39,12 @@ export default function Navbar({
             onClick={() => setView('landing')} 
             className="flex items-center gap-3 cursor-pointer group"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-[#4f8cff] to-[#7c5cff] text-white shadow-md shadow-[#4f8cff]/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-[#4f8cff]/40">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-[#38bdf8] to-[#22d3ee] text-white shadow-md shadow-[#38bdf8]/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-[#38bdf8]/40">
               <Activity className="h-5.5 w-5.5 animate-pulse" />
             </div>
             <div>
-              <span className="font-display text-xl font-bold tracking-tight bg-gradient-to-r from-[#4f8cff] via-[#5da9ff] to-[#7c5cff] bg-clip-text text-transparent">
-                SIHRMS
+              <span className="font-display text-xl font-bold tracking-tight bg-gradient-to-r from-[#4f8cff] via-[#5da9ff] to-[#22d3ee] bg-clip-text text-transparent">
+                HealthOrbit
               </span>
               <span className="block font-mono text-[8px] font-bold tracking-widest text-[#94a3b8] uppercase">
                 Clinical Ledger
@@ -60,8 +60,8 @@ export default function Navbar({
                   onClick={() => navigateToDashboard(currentUser)}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-all ${
                     ['patient-dashboard', 'doctor-dashboard', 'admin-dashboard'].includes(view)
-                      ? 'bg-[#4f8cff]/10 text-[#4f8cff] border border-[#4f8cff]/20' 
-                      : 'text-slate-300 hover:text-white hover:bg-white/5'
+                      ? 'bg-[#38bdf8]/10 text-[#38bdf8] border border-[#38bdf8]/20 shadow-[0_0_15px_rgba(56,189,248,0.15)]' 
+                      : 'text-slate-300 hover:text-[#38bdf8] hover:bg-white/5'
                   }`}
                 >
                   <ClipboardList className="w-4 h-4" />
@@ -84,11 +84,11 @@ export default function Navbar({
                 <div className="relative">
                   <button 
                     onClick={() => setNotifDropdownOpen(!notifDropdownOpen)}
-                    className="relative p-2 text-slate-300 hover:text-[#4f8cff] hover:bg-white/5 rounded-xl transition-all"
+                    className="relative p-2 text-slate-300 hover:text-[#38bdf8] hover:bg-white/5 rounded-xl transition-all"
                   >
                     <Bell className="w-5 h-5" />
                     {unreadCount > 0 && (
-                      <span className="absolute top-1.5 right-1.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white ring-2 ring-[#050816]">
+                      <span className="absolute top-1.5 right-1.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white ring-2 ring-[#020617]">
                         {unreadCount}
                       </span>
                     )}
@@ -107,7 +107,7 @@ export default function Navbar({
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.95 }}
                           transition={{ duration: 0.15 }}
-                          className="absolute right-0 mt-2.5 w-80 overflow-hidden rounded-2xl border border-white/10 bg-[#0f172a]/95 backdrop-blur-md shadow-2xl z-50"
+                          className="absolute right-0 mt-2.5 w-80 overflow-hidden rounded-2xl border border-white/10 bg-[#020617]/95 backdrop-blur-md shadow-2xl z-50"
                         >
                           <div className="flex items-center justify-between border-b border-white/5 bg-[#1e293b]/40 px-4 py-3">
                             <span className="text-xs font-bold text-white font-display">Notifications</span>
@@ -135,7 +135,7 @@ export default function Navbar({
                                     if (!n.read) handleMarkRead(n.id);
                                   }}
                                   className={`p-3.5 text-left text-xs cursor-pointer hover:bg-white/5 transition-colors ${
-                                    !n.read ? 'bg-[#4f8cff]/5 border-l-2 border-[#4f8cff]' : ''
+                                    !n.read ? 'bg-[#38bdf8]/5 border-l-2 border-[#38bdf8]' : ''
                                   }`}
                                 >
                                   <div className="flex justify-between items-start mb-1">
@@ -159,7 +159,7 @@ export default function Navbar({
 
                 {/* Profile Widget */}
                 <div className="flex items-center gap-3 pl-4 border-l border-white/10">
-                  <div className="h-9 w-9 flex items-center justify-center rounded-xl bg-gradient-to-tr from-[#1e293b] to-[#0f172a] border border-white/10 font-display text-xs font-bold text-[#4f8cff] uppercase">
+                  <div className="h-9 w-9 flex items-center justify-center rounded-xl bg-gradient-to-tr from-[#1e293b] to-[#0f172a] border border-white/10 font-display text-xs font-bold text-[#38bdf8] uppercase">
                     {currentUser.name.slice(0, 2)}
                   </div>
                   <div className="text-left">
@@ -190,13 +190,13 @@ export default function Navbar({
                 </button>
                 <button 
                   onClick={() => { setView('login'); }}
-                  className="text-xs font-bold text-slate-300 hover:text-[#4f8cff] transition-all"
+                  className="text-xs font-bold text-slate-300 hover:text-[#38bdf8] transition-all"
                 >
                   Login
                 </button>
                 <button 
                   onClick={() => { setView('register'); }}
-                  className="bg-gradient-to-tr from-[#4f8cff] to-[#7c5cff] text-white shadow-md shadow-[#4f8cff]/20 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-[1.02] hover:shadow-[#4f8cff]/30 active:scale-[0.98]"
+                  className="bg-gradient-to-tr from-[#38bdf8] to-[#22d3ee] text-white shadow-md shadow-[#38bdf8]/20 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-[1.02] hover:shadow-[#38bdf8]/30 active:scale-[0.98]"
                 >
                   Register Now
                 </button>
@@ -207,7 +207,7 @@ export default function Navbar({
           {/* Mobile menu trigger */}
           <div className="md:hidden flex items-center gap-2">
             {currentUser && unreadCount > 0 && (
-              <span className="h-2 w-2 rounded-full bg-rose-500 ring-2 ring-[#050816] animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-rose-500 ring-2 ring-[#020617] animate-pulse" />
             )}
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -227,12 +227,12 @@ export default function Navbar({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-white/5 bg-[#050816]/95 backdrop-blur-md px-4 py-4 space-y-3 shadow-lg overflow-hidden"
+            className="md:hidden border-t border-white/5 bg-[#020617]/95 backdrop-blur-md px-4 py-4 space-y-3 shadow-lg overflow-hidden"
           >
             {currentUser ? (
               <>
                 <div className="p-3 bg-white/5 rounded-xl flex items-center gap-3 border border-white/5">
-                  <div className="h-9 w-9 flex items-center justify-center rounded-xl bg-[#4f8cff]/10 text-[#4f8cff] font-display text-xs font-bold uppercase">
+                  <div className="h-9 w-9 flex items-center justify-center rounded-xl bg-[#38bdf8]/10 text-[#38bdf8] font-display text-xs font-bold uppercase">
                     {currentUser.name.slice(0, 2)}
                   </div>
                   <div>
@@ -243,7 +243,7 @@ export default function Navbar({
 
                 <button 
                   onClick={() => { setMobileMenuOpen(false); navigateToDashboard(currentUser); }}
-                  className="w-full text-left py-2.5 px-3 text-slate-300 font-semibold text-xs hover:text-[#4f8cff] hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-all"
+                  className="w-full text-left py-2.5 px-3 text-slate-300 font-semibold text-xs hover:text-[#38bdf8] hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-all"
                 >
                   <ClipboardList className="w-4 h-4" /> Dashboard
                 </button>
@@ -272,13 +272,13 @@ export default function Navbar({
                 </button>
                 <button 
                   onClick={() => { setMobileMenuOpen(false); setView('login'); }}
-                  className="w-full text-left py-2.5 px-3 text-slate-300 font-semibold text-xs hover:text-[#4f8cff] hover:bg-white/5 rounded-xl transition-all"
+                  className="w-full text-left py-2.5 px-3 text-slate-300 font-semibold text-xs hover:text-[#38bdf8] hover:bg-white/5 rounded-xl transition-all"
                 >
                   Sign In
                 </button>
                 <button 
                   onClick={() => { setMobileMenuOpen(false); setView('register'); }}
-                  className="w-full bg-gradient-to-tr from-[#4f8cff] to-[#7c5cff] text-white text-center py-2.5 rounded-xl font-bold text-xs shadow-md shadow-[#4f8cff]/20 block"
+                  className="w-full bg-gradient-to-tr from-[#38bdf8] to-[#22d3ee] text-white text-center py-2.5 rounded-xl font-bold text-xs shadow-md shadow-[#38bdf8]/20 block"
                 >
                   Get Started
                 </button>

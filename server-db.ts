@@ -193,7 +193,7 @@ const getInitialDatabase = (): DatabaseSchema => {
   ];
 
   const users: User[] = [
-    { id: 'USR-ADMIN', email: 'admin@sihrms.org', passwordHash: adminPasswordHash, role: 'admin', name: 'Sarah Jenkins', createdAt: new Date(Date.now() - 30 * 24 * 3600 * 1000).toISOString() },
+    { id: 'USR-ADMIN', email: 'admin@healthorbit.org', passwordHash: adminPasswordHash, role: 'admin', name: 'Sarah Jenkins', createdAt: new Date(Date.now() - 30 * 24 * 3600 * 1000).toISOString() },
     { id: 'USR-DOC1', email: 'dr.smith@metro.org', passwordHash: doctor1PasswordHash, role: 'doctor', name: 'Dr. Robert Smith', createdAt: new Date(Date.now() - 25 * 24 * 3600 * 1000).toISOString() },
     { id: 'USR-DOC2', email: 'dr.chen@stjude.org', passwordHash: doctor2PasswordHash, role: 'doctor', name: 'Dr. Lisa Chen', createdAt: new Date(Date.now() - 15 * 24 * 3600 * 1000).toISOString() },
     { id: 'USR-PAT1', email: 'john.doe@gmail.com', passwordHash: patient1PasswordHash, role: 'patient', name: 'John Doe', createdAt: new Date(Date.now() - 20 * 24 * 3600 * 1000).toISOString() }
