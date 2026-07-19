@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
   Activity, Shield, BadgeCheck, Heart, ArrowRight, Sparkles, 
   ShieldAlert, FileText, Lock, CheckCircle2, Zap, Users, 
-  Database, RefreshCw, Key, ChevronRight, Stethoscope
+  Database, RefreshCw, Key, ChevronRight, Stethoscope, ChevronDown
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -12,6 +12,27 @@ interface LandingPageProps {
 }
 
 export default function LandingPage({ setView, setAuthRole }: LandingPageProps) {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const faqs = [
+    {
+      q: "How does the 24-hour sensitive access lock work?",
+      a: "When a doctor requests permission to view a report marked as sensitive, you receive a real-time dashboard notification. Once you click 'Approve', a secure JWT link is validated for exactly 24 hours. After this period, the access token naturally decays and the report automatically relocks."
+    },
+    {
+      q: "Who can see my Emergency Profile?",
+      a: "Your Emergency Profile contains only critical rescue vitals (blood group, severe allergies, chronic conditions, and emergency contact numbers). It is designed to be accessible to emergency first responders without full account authentication, saving vital minutes during a crisis."
+    },
+    {
+      q: "What is a Clinical Trust Badge?",
+      a: "HealthOrbit separates patient-uploaded medical history from clinical records. Reports uploaded directly by verified practitioners at partner hospitals receive a 'Clinic Verified' stamp, whereas user-reported items receive a 'Patient Self-Report' indicator."
+    },
+    {
+      q: "Is my medical data sold or exposed to advertisers?",
+      a: "Absolutely not. HealthOrbit relies on a decentralized identity protocol. You hold the unique decryption keys. Without your explicit cryptographic approval, no doctor, clinic, or third party can access your medical records."
+    }
+  ];
+
   // Animation presets
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -405,6 +426,53 @@ export default function LandingPage({ setView, setAuthRole }: LandingPageProps) 
 
         </div>
 
+      </div>
+
+      {/* FAQ Section */}
+      <div className="space-y-12 relative z-10 max-w-4xl mx-auto">
+        <div className="text-center space-y-3">
+          <span className="text-[10px] uppercase font-bold tracking-widest text-[#38bdf8] font-mono bg-[#38bdf8]/10 px-3 py-1 rounded-full border border-[#38bdf8]/15">
+            Platform F.A.Q.
+          </span>
+          <h2 className="font-display text-2xl sm:text-4.5xl font-black text-white tracking-tight">
+            Frequently Answered Inquiries.
+          </h2>
+          <p className="text-slate-400 text-xs sm:text-sm">
+            Everything you need to know about the HealthOrbit security system, access policies, and data flow.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          {faqs.map((faq, idx) => (
+            <div 
+              key={idx} 
+              className="glass-card rounded-2xl border border-white/5 overflow-hidden transition-all duration-300 hover:border-white/10"
+            >
+              <button
+                onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                className="w-full flex items-center justify-between p-6 text-left cursor-pointer hover:bg-white/5 transition-colors focus:outline-none"
+              >
+                <span className="text-sm font-bold text-white pr-4">{faq.q}</span>
+                <ChevronDown 
+                  className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-300 ${
+                    openFaq === idx ? "rotate-180 text-[#38bdf8]" : ""
+                  }`} 
+                />
+              </button>
+              
+              <motion.div
+                initial={false}
+                animate={{ height: openFaq === idx ? "auto" : 0 }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div className="p-6 pt-0 text-xs text-slate-300 leading-relaxed border-t border-white/5 bg-slate-950/20 font-sans">
+                  {faq.a}
+                </div>
+              </motion.div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Emergency Fast Look Up Action Banner */}

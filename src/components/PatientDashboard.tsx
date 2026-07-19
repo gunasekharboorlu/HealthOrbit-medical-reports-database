@@ -168,7 +168,7 @@ export default function PatientDashboard({
 
           <button 
             onClick={copyPatientId}
-            className="w-full mt-6 bg-[#4f8cff]/10 hover:bg-[#4f8cff]/20 text-white border border-[#4f8cff]/25 text-xs font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:shadow-md"
+            className="w-full mt-6 premium-btn-secondary text-xs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer"
           >
             {copied ? (
               <>
@@ -407,7 +407,7 @@ export default function PatientDashboard({
                   value={uploadTitle} 
                   onChange={e => setUploadTitle(e.target.value)} 
                   placeholder="e.g. LabCorp Blood Panel" 
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-white/10 bg-[#090d23]/80 text-xs font-semibold outline-none text-white focus:border-[#4f8cff] placeholder-slate-500 transition-colors" 
+                  className="w-full px-3.5 py-2.5 rounded-xl premium-input text-xs font-semibold outline-none text-white placeholder-slate-500" 
                 />
               </div>
 
@@ -416,7 +416,7 @@ export default function PatientDashboard({
                 <select 
                   value={uploadCategory} 
                   onChange={e => setUploadCategory(e.target.value as any)} 
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-white/10 bg-[#090d23] text-xs font-semibold outline-none text-white focus:border-[#4f8cff] cursor-pointer"
+                  className="w-full px-3.5 py-2.5 rounded-xl premium-input text-xs font-semibold outline-none text-white cursor-pointer"
                 >
                   <option className="bg-[#050816]">Lab Report</option>
                   <option className="bg-[#050816]">Prescription</option>
@@ -433,7 +433,7 @@ export default function PatientDashboard({
                   onChange={e => setUploadDesc(e.target.value)} 
                   placeholder="e.g. Annual lipid panel, cholesterol is elevated." 
                   rows={2} 
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-white/10 bg-[#090d23]/80 text-xs font-semibold outline-none resize-none text-white focus:border-[#4f8cff] placeholder-slate-500 transition-colors" 
+                  className="w-full px-3.5 py-2.5 rounded-xl premium-input text-xs font-semibold outline-none resize-none text-white placeholder-slate-500" 
                 />
               </div>
 
@@ -517,7 +517,7 @@ export default function PatientDashboard({
                     value={editAllergies} 
                     onChange={e => setEditAllergies(e.target.value)} 
                     placeholder="e.g. Penicillin, Peanuts" 
-                    className="w-full px-3.5 py-2 rounded-xl border border-white/10 bg-[#090d23] text-xs text-white outline-none focus:border-[#4f8cff]" 
+                    className="w-full px-3.5 py-2 rounded-xl premium-input text-xs text-white outline-none" 
                   />
                 </div>
                 <div>
@@ -527,7 +527,7 @@ export default function PatientDashboard({
                     value={editDiseases} 
                     onChange={e => setEditDiseases(e.target.value)} 
                     placeholder="e.g. Asthma, Hypertension" 
-                    className="w-full px-3.5 py-2 rounded-xl border border-white/10 bg-[#090d23] text-xs text-white outline-none focus:border-[#4f8cff]" 
+                    className="w-full px-3.5 py-2 rounded-xl premium-input text-xs text-white outline-none" 
                   />
                 </div>
                 
@@ -539,14 +539,14 @@ export default function PatientDashboard({
                       placeholder="Guardian Name" 
                       value={editContactName} 
                       onChange={e => setEditContactName(e.target.value)} 
-                      className="px-3.5 py-2 rounded-xl border border-white/10 bg-[#090d23] text-xs text-white outline-none focus:border-[#4f8cff]" 
+                      className="px-3.5 py-2 rounded-xl premium-input text-xs text-white outline-none" 
                     />
                     <input 
                       type="text" 
                       placeholder="Guardian Phone" 
                       value={editContactPhone} 
                       onChange={e => setEditContactPhone(e.target.value)} 
-                      className="px-3.5 py-2 rounded-xl border border-white/10 bg-[#090d23] text-xs text-white outline-none focus:border-[#4f8cff]" 
+                      className="px-3.5 py-2 rounded-xl premium-input text-xs text-white outline-none" 
                     />
                   </div>
                   <input 
@@ -554,7 +554,7 @@ export default function PatientDashboard({
                     placeholder="Relation (e.g. Spouse, Parent)" 
                     value={editContactRelation} 
                     onChange={e => setEditContactRelation(e.target.value)} 
-                    className="w-full px-3.5 py-2 rounded-xl border border-white/10 bg-[#090d23] text-xs text-white outline-none focus:border-[#4f8cff]" 
+                    className="w-full px-3.5 py-2 rounded-xl premium-input text-xs text-white outline-none" 
                   />
                 </div>
 

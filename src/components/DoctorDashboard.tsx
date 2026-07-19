@@ -1102,7 +1102,7 @@ export default function DoctorDashboard({
                       value={searchQuery}
                       onChange={e => setSearchQuery(e.target.value)}
                       placeholder="Enter ID (PAT-100001), Name (John Doe), or Phone (+1...)"
-                      className="flex-1 px-4 py-3 rounded-xl border border-white/10 bg-[#090d23]/80 text-xs font-bold outline-none text-white focus:border-[#4f8cff] placeholder-slate-500" 
+                      className="flex-1 px-4 py-3 rounded-xl premium-input text-xs font-bold outline-none text-white placeholder-slate-500" 
                     />
                     <button 
                       type="submit"

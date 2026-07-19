@@ -140,24 +140,22 @@ export function generateId(prefix: string = ''): string {
   return `${prefix}${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
 }
 
+import crypto from 'crypto';
+
 export function generatePatientId(): string {
   try {
-    const DB_FILE = path.join(process.cwd(), 'db.json');
-    if (fs.existsSync(DB_FILE)) {
-      const raw = fs.readFileSync(DB_FILE, 'utf-8');
-      const data = JSON.parse(raw);
-      if (data && data.patients && data.patients.length > 0) {
-        let maxId = 100000;
-        data.patients.forEach((p: any) => {
-          if (p.patientId && p.patientId.startsWith('PAT-')) {
-            const num = parseInt(p.patientId.replace('PAT-', ''), 10);
-            if (!isNaN(num) && num > maxId) {
-              maxId = num;
-            }
+    const patients = db.getPatients();
+    if (patients && patients.length > 0) {
+      let maxId = 100000;
+      patients.forEach((p: any) => {
+        if (p.patientId && p.patientId.startsWith('PAT-')) {
+          const num = parseInt(p.patientId.replace('PAT-', ''), 10);
+          if (!isNaN(num) && num > maxId) {
+            maxId = num;
           }
-        });
-        return `PAT-${maxId + 1}`;
-      }
+        }
+      });
+      return `PAT-${maxId + 1}`;
     }
   } catch (e) {
     // ignore and fallback
@@ -165,15 +163,9 @@ export function generatePatientId(): string {
   return 'PAT-100001';
 }
 
-// Generate a simple hash from a string to detect duplicate file content
+// Generate a cryptographic SHA-256 hash from content to detect duplicate file content
 export function computeHash(content: string): string {
-  let hash = 0;
-  for (let i = 0; i < content.length; i++) {
-    const char = content.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-  return Math.abs(hash).toString(16);
+  return crypto.createHash('sha256').update(content || '').digest('hex');
 }
 
 // Initial Seed Data

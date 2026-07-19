@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Mail, Lock, User as UserIcon, Calendar, Activity, ChevronRight, Sparkles, Building, ShieldCheck } from 'lucide-react';
+import { Mail, Lock, User as UserIcon, Calendar, Activity, ChevronRight, Sparkles, Building, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 
 interface AuthFormsProps {
   view: 'login' | 'register';
@@ -56,6 +56,8 @@ export default function AuthForms({
   handleRegister,
 }: AuthFormsProps) {
   
+  const [showPassword, setShowPassword] = useState(false);
+
   const hasMinLength = password.length >= 8;
   const hasUppercase = /[A-Z]/.test(password);
   const hasLowercase = /[a-z]/.test(password);
@@ -63,12 +65,51 @@ export default function AuthForms({
   const hasSpecial = /[!@#$%^&*()]/.test(password);
 
   return (
-    <div className="max-w-md mx-auto py-10">
-      <motion.div 
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glass-card rounded-3xl border border-white/10 p-8 space-y-6"
-      >
+    <div className="max-w-5xl mx-auto py-8 px-4 relative z-10">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
+        
+        {/* Left Side: Modern illustration and features panel */}
+        <div className="hidden md:flex md:col-span-5 flex-col justify-between p-8 rounded-3xl border border-white/10 bg-[#090d23]/40 backdrop-blur-xl relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#38bdf8]/10 rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#7c5cff]/10 rounded-full blur-2xl pointer-events-none" />
+          
+          <div className="space-y-6 relative z-10">
+            <div className="flex items-center gap-2.5 text-[#38bdf8]">
+              <ShieldCheck className="w-8 h-8 animate-pulse text-[#38bdf8]" />
+              <span className="font-display font-extrabold text-xs uppercase tracking-widest font-mono">Clinical Shield Active</span>
+            </div>
+            <h2 className="font-display text-3xl font-black text-white leading-tight">
+              Decentralized EHR Control Room.
+            </h2>
+            <p className="text-xs text-slate-300 leading-relaxed font-sans">
+              Verify credentials, upload encrypted patient timelines, and manage instant health status updates on a tamper-proof system.
+            </p>
+          </div>
+          
+          {/* Dynamic ledger state visualization */}
+          <div className="py-6 relative z-10 flex flex-col gap-3">
+            <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm">
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span className="text-[10px] font-mono text-slate-300">System Status: Active & Secured</span>
+            </div>
+            <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm">
+              <div className="w-2 h-2 rounded-full bg-[#38bdf8]" />
+              <span className="text-[10px] font-mono text-slate-300">Integrity Check: SHA-256 Validated</span>
+            </div>
+          </div>
+          
+          <div className="text-[9px] font-mono text-slate-500 border-t border-white/5 pt-4">
+            Security Protocol Version 4.1-A
+          </div>
+        </div>
+
+        {/* Right Side: Auth Form Card */}
+        <div className="md:col-span-7 flex flex-col justify-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-card rounded-3xl border border-white/10 p-8 space-y-6 shadow-2xl relative overflow-hidden"
+          >
         {/* Toggle Switch */}
         <div className="text-center space-y-2">
           <span className="font-display text-2xl font-black tracking-tight text-white block">
@@ -131,7 +172,7 @@ export default function AuthForms({
                   value={name} 
                   onChange={e => setName(e.target.value)} 
                   placeholder="e.g. John Doe" 
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-[#0c1425]/80 focus:border-[#38bdf8] focus:ring-4 focus:ring-[#38bdf8]/10 transition outline-none text-xs font-medium text-white placeholder-slate-500" 
+                  className="w-full pl-10 pr-4 py-3 rounded-xl premium-input outline-none text-xs font-medium text-white placeholder-slate-500" 
                 />
                 <UserIcon className="absolute left-3.5 top-3.5 w-4.5 h-4.5 text-slate-400" />
               </div>
@@ -149,7 +190,7 @@ export default function AuthForms({
                 value={email} 
                 onChange={e => setEmail(e.target.value)} 
                 placeholder="e.g. john@example.com" 
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-[#0c1425]/80 focus:border-[#38bdf8] focus:ring-4 focus:ring-[#38bdf8]/10 transition outline-none text-xs font-medium text-white placeholder-slate-500" 
+                className="w-full pl-10 pr-4 py-3 rounded-xl premium-input outline-none text-xs font-medium text-white placeholder-slate-500" 
               />
               <Mail className="absolute left-3.5 top-3.5 w-4.5 h-4.5 text-slate-400" />
             </div>
@@ -161,14 +202,21 @@ export default function AuthForms({
             </label>
             <div className="relative">
               <input 
-                type="password" 
+                type={showPassword ? "text" : "password"} 
                 required 
                 value={password} 
                 onChange={e => setPassword(e.target.value)} 
                 placeholder="••••••••" 
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-[#0c1425]/80 focus:border-[#38bdf8] focus:ring-4 focus:ring-[#38bdf8]/10 transition outline-none text-xs font-medium text-white placeholder-slate-500" 
+                className="w-full pl-10 pr-10 py-3 rounded-xl premium-input outline-none text-xs font-medium text-white placeholder-slate-500" 
               />
               <Lock className="absolute left-3.5 top-3.5 w-4.5 h-4.5 text-slate-400" />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-3.5 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              >
+                {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
+              </button>
             </div>
 
             {/* Password Validation Requirements Panel */}
@@ -242,7 +290,7 @@ export default function AuthForms({
                     required
                     value={dob} 
                     onChange={e => setDob(e.target.value)} 
-                    className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#0c1425] text-xs font-medium outline-none text-white focus:border-[#38bdf8]" 
+                    className="w-full px-3 py-2.5 rounded-lg premium-input text-xs font-medium outline-none text-white" 
                   />
                 </div>
               </div>
@@ -251,7 +299,7 @@ export default function AuthForms({
                 <select 
                   value={gender} 
                   onChange={e => setGender(e.target.value)} 
-                  className="w-full px-2 py-2.5 rounded-lg border border-white/10 bg-[#0c1425] text-xs font-medium outline-none text-white focus:border-[#38bdf8]"
+                  className="w-full px-2 py-2.5 rounded-lg premium-input text-xs font-medium outline-none text-white"
                 >
                   <option className="bg-[#020617]">Male</option>
                   <option className="bg-[#020617]">Female</option>
@@ -263,7 +311,7 @@ export default function AuthForms({
                 <select 
                   value={bloodGroup} 
                   onChange={e => setBloodGroup(e.target.value)} 
-                  className="w-full px-2 py-2.5 rounded-lg border border-white/10 bg-[#0c1425] text-xs font-medium outline-none text-white focus:border-[#38bdf8]"
+                  className="w-full px-2 py-2.5 rounded-lg premium-input text-xs font-medium outline-none text-white"
                 >
                   <option className="bg-[#020617]">O-Positive</option>
                   <option className="bg-[#020617]">O-Negative</option>
@@ -288,7 +336,7 @@ export default function AuthForms({
                   placeholder="e.g. Cardiology, Pediatrics" 
                   value={specialization} 
                   onChange={e => setSpecialization(e.target.value)} 
-                  className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#0c1425] text-xs font-medium outline-none text-white placeholder-slate-500 focus:border-[#38bdf8]" 
+                  className="w-full px-3 py-2.5 rounded-lg premium-input text-xs font-medium outline-none text-white placeholder-slate-500"
                 />
               </div>
               <div>
@@ -299,7 +347,7 @@ export default function AuthForms({
                   placeholder="e.g. LIC-12345" 
                   value={licenseNumber} 
                   onChange={e => setLicenseNumber(e.target.value)} 
-                  className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#0c1425] text-xs font-mono font-medium outline-none text-white placeholder-slate-500 focus:border-[#38bdf8]" 
+                  className="w-full px-3 py-2.5 rounded-lg premium-input text-xs font-mono font-medium outline-none text-white placeholder-slate-500" 
                 />
               </div>
               <div>
@@ -307,7 +355,7 @@ export default function AuthForms({
                 <select 
                   value={hospitalId} 
                   onChange={e => setHospitalId(e.target.value)} 
-                  className="w-full px-3 py-2.5 rounded-lg border border-white/10 bg-[#0c1425] text-xs font-medium outline-none text-white focus:border-[#38bdf8]"
+                  className="w-full px-3 py-2.5 rounded-lg premium-input text-xs font-medium outline-none text-white"
                 >
                   <option className="bg-[#020617]" value="HOSP-1">Saint Jude General Hospital</option>
                   <option className="bg-[#020617]" value="HOSP-2">Metropolis Medical Center</option>
@@ -319,7 +367,7 @@ export default function AuthForms({
 
           <button 
             type="submit" 
-            className="w-full bg-gradient-to-r from-[#38bdf8] to-[#22d3ee] hover:opacity-95 text-slate-950 shadow-lg shadow-[#38bdf8]/25 py-3.5 rounded-xl text-xs font-black tracking-wide transition-all hover:scale-[1.01] flex items-center justify-center gap-1.5 cursor-pointer"
+            className="w-full premium-btn-primary py-3.5 rounded-xl text-xs font-black tracking-wide transition-all flex items-center justify-center gap-1.5 cursor-pointer"
           >
             {view === 'login' ? 'Access Database' : 'Register Profile'}
             <ChevronRight className="w-4 h-4 text-slate-950 stroke-[3]" />
@@ -404,6 +452,8 @@ export default function AuthForms({
           </div>
         )}
       </motion.div>
+        </div>
+      </div>
     </div>
   );
 }

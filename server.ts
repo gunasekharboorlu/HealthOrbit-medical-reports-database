@@ -467,7 +467,7 @@ app.post('/api/patient/respond-access/:id', authenticateToken, requireRole(['pat
       id: generateId('NOT-'),
       userId: request.doctorId,
       title: `Access Request ${status.toUpperCase()}`,
-      message: `Patient John Doe has ${status} your access request to view "${request.recordTitle || 'All Records'}".`,
+      message: `Patient ${req.user.name} has ${status} your access request to view "${request.recordTitle || 'All Records'}".`,
       read: false,
       createdAt: new Date().toISOString()
     });
@@ -492,7 +492,7 @@ app.get('/api/patient/access-history', authenticateToken, requireRole(['patient'
 // Emergency Profile endpoint (Accessible without login to save lives, but only basic info!)
 app.get('/api/patient/emergency-profile/:patientId', (req, res) => {
   const patientId = req.params.patientId;
-  const patient = db.getPatients().find(p => p.patientId === patientId);
+  const patient = db.getPatients().find(p => p.patientId.toUpperCase() === (patientId || '').trim().toUpperCase());
 
   if (!patient) {
     return res.status(404).json({ error: 'Emergency profile not found' });

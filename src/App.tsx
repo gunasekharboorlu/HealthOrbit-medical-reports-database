@@ -541,7 +541,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#020617]/50 text-white relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-[#020617]/75 text-white relative overflow-hidden">
       
       {/* Glowing Mesh Circles (Layer 2) */}
       <div className="absolute top-[-10%] left-[5%] w-[600px] h-[600px] bg-[#38bdf8]/12 rounded-full blur-[130px] pointer-events-none animate-pulse-glow" />
@@ -601,7 +601,7 @@ export default function App() {
             </div>
             <div>
               <p className="text-sm font-semibold text-white tracking-wider uppercase font-display">HealthOrbit Secure Engine</p>
-              <p className="text-xs text-slate-400 mt-1">Synchronizing clinical ledger ledger...</p>
+              <p className="text-xs text-slate-400 mt-1">Synchronizing clinical ledger...</p>
             </div>
             <div className="w-full bg-slate-950/50 rounded-full h-1 overflow-hidden">
               <div className="bg-gradient-to-r from-[#4f8cff] to-[#7c5cff] h-full w-[70%] rounded-full animate-[shimmer_2s_infinite]"></div>

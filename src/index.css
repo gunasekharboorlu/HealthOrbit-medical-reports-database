@@ -37,34 +37,48 @@
 
 /* Glassmorphic Cybercard */
 .glass-card {
-  background: rgba(12, 20, 35, 0.55);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px 0 rgba(56, 189, 248, 0.03);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(9, 14, 28, 0.62);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 
+    0 1px 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 15px 45px -10px rgba(0, 0, 0, 0.7), 
+    0 0 25px 0 rgba(56, 189, 248, 0.02);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.7), 0 0 25px 2px rgba(56, 189, 248, 0.08);
-  border-color: rgba(56, 189, 248, 0.2);
+  transform: translateY(-3px);
+  border-color: rgba(56, 189, 248, 0.25);
+  box-shadow: 
+    0 1px 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 25px 55px -12px rgba(0, 0, 0, 0.9), 
+    0 0 30px 2px rgba(56, 189, 248, 0.08);
 }
 
 .glass-card-glowing {
-  background: rgba(12, 20, 35, 0.6);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px 0 rgba(56, 189, 248, 0.06), inset 0 0 12px rgba(56, 189, 248, 0.04);
+  background: rgba(9, 14, 28, 0.68);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 
+    0 1px 1px 0 rgba(255, 255, 255, 0.1) inset,
+    0 20px 50px -10px rgba(0, 0, 0, 0.75), 
+    0 0 25px 0 rgba(56, 189, 248, 0.1), 
+    inset 0 0 15px rgba(56, 189, 248, 0.06);
 }
 
 .glass-card-purple {
-  background: rgba(12, 20, 35, 0.6);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(124, 92, 255, 0.25);
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px 0 rgba(124, 92, 255, 0.06), inset 0 0 12px rgba(124, 92, 255, 0.04);
+  background: rgba(9, 14, 28, 0.68);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(124, 92, 255, 0.35);
+  box-shadow: 
+    0 1px 1px 0 rgba(255, 255, 255, 0.1) inset,
+    0 20px 50px -10px rgba(0, 0, 0, 0.75), 
+    0 0 25px 0 rgba(124, 92, 255, 0.1), 
+    inset 0 0 15px rgba(124, 92, 255, 0.06);
 }
 
 /* Beautiful custom subtle animations */
@@ -129,5 +143,101 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(79, 140, 255, 0.4);
+}
+
+/* Premium SaaS Inputs */
+.premium-input {
+  background: rgba(5, 8, 22, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 
+    0 1px 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 4px 12px -2px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.premium-input:focus {
+  border-color: #38bdf8 !important;
+  box-shadow: 
+    0 1px 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 0 12px 0 rgba(56, 189, 248, 0.25) !important;
+  background: rgba(5, 8, 22, 0.8) !important;
+}
+
+/* Premium Table Rows */
+.premium-table-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: all 0.2s ease;
+}
+
+.premium-table-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Glowing Badges */
+.premium-badge-glow {
+  box-shadow: 0 0 8px 0 rgba(56, 189, 248, 0.15);
+}
+
+.premium-badge-emerald-glow {
+  box-shadow: 0 0 8px 0 rgba(16, 185, 129, 0.15);
+}
+
+/* Shimmer Animation for Skeletons */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.premium-shimmer {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite linear;
+}
+
+/* Premium Buttons */
+.premium-btn-primary {
+  background: linear-gradient(135deg, #38bdf8 0%, #22d3ee 100%) !important;
+  color: #020617 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.025em;
+  box-shadow: 
+    0 1px 2px 0 rgba(255, 255, 255, 0.2) inset,
+    0 4px 12px 0 rgba(56, 189, 248, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.premium-btn-primary:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 
+    0 1px 2px 0 rgba(255, 255, 255, 0.3) inset,
+    0 8px 20px 0 rgba(56, 189, 248, 0.4);
+}
+
+.premium-btn-primary:active {
+  transform: translateY(0);
+}
+
+.premium-btn-secondary {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #e2e8f0 !important;
+  font-weight: 600 !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.premium-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+
+.premium-btn-secondary:active {
+  transform: translateY(0);
+}
+
+/* Timeline Track Glow */
+.timeline-track-glow {
+  box-shadow: 0 0 10px 1px rgba(56, 189, 248, 0.15);
 }
 
