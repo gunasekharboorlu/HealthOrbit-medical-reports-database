@@ -558,13 +558,13 @@ export default function DoctorDashboard({
               <div className="glass-card border border-white/5 hover:border-[#4f8cff]/30 rounded-2xl p-4 col-span-2 lg:col-span-1 shadow-sm flex flex-col justify-between h-28 transition duration-300">
                 <div className="flex justify-between items-start">
                   <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider font-mono">Verification status</span>
-                  <div className={`p-1.5 rounded-xl ${doctor.isVerified ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
+                  <div className={`p-1.5 rounded-xl ${doctor.isVerified ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`}>
                     <BadgeCheck className="w-4 h-4" />
                   </div>
                 </div>
                 <div>
                   <span className="block text-xs font-bold text-white tracking-tight">
-                    {doctor.isVerified ? 'Verified Partner' : 'Revoked Status'}
+                    {doctor.isVerified ? 'Verified Partner' : 'Pending Verification'}
                   </span>
                   <span className="text-[9px] text-slate-400 font-mono block truncate">{doctor.licenseNumber}</span>
                 </div>

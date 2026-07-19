@@ -352,20 +352,53 @@ export default function AuthForms({
 
         {/* Demo Account Credentials (Frictionless discovery) */}
         {view === 'login' && (
-          <div className="bg-[#0c1425]/60 border border-white/5 rounded-2xl p-4 text-[10px] text-slate-400 space-y-1.5">
-            <span className="font-bold text-white block flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-[#38bdf8]" />
+          <div className="bg-[#0c1425]/60 border border-white/5 rounded-2xl p-4 text-[10px] text-slate-400 space-y-2">
+            <span className="font-bold text-white block flex items-center gap-1.5 font-sans">
+              <Sparkles className="w-3.5 h-3.5 text-[#38bdf8] animate-pulse" />
               Developer Sandbox Access:
             </span>
-            <ul className="space-y-1 font-mono text-[9px]">
-              <li>
-                <span className="font-bold text-slate-300">Patient:</span> john.doe@gmail.com / patient123
+            <p className="text-[9px] text-slate-400 font-sans">
+              Click any account card below to automatically load its credentials and select the correct tab:
+            </p>
+            <ul className="space-y-1.5">
+              <li 
+                onClick={() => {
+                  setEmail('john.doe@gmail.com');
+                  setPassword('patient123');
+                  setAuthRole('patient');
+                }}
+                className="cursor-pointer hover:bg-white/5 border border-transparent hover:border-white/10 p-2 rounded-xl transition flex justify-between items-center group font-mono text-[9px]"
+              >
+                <div>
+                  <span className="font-bold text-slate-200 group-hover:text-[#38bdf8] transition-colors">Patient:</span> john.doe@gmail.com / patient123
+                </div>
+                <span className="text-[8px] bg-[#38bdf8]/10 text-[#38bdf8] border border-[#38bdf8]/20 px-1.5 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-all font-sans font-bold">Autofill</span>
               </li>
-              <li>
-                <span className="font-bold text-slate-300">Doctor:</span> dr.smith@metro.org / doctor123
+              <li 
+                onClick={() => {
+                  setEmail('dr.smith@metro.org');
+                  setPassword('doctor123');
+                  setAuthRole('doctor');
+                }}
+                className="cursor-pointer hover:bg-white/5 border border-transparent hover:border-white/10 p-2 rounded-xl transition flex justify-between items-center group font-mono text-[9px]"
+              >
+                <div>
+                  <span className="font-bold text-slate-200 group-hover:text-[#38bdf8] transition-colors">Doctor:</span> dr.smith@metro.org / doctor123
+                </div>
+                <span className="text-[8px] bg-[#38bdf8]/10 text-[#38bdf8] border border-[#38bdf8]/20 px-1.5 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-all font-sans font-bold">Autofill</span>
               </li>
-              <li>
-                <span className="font-bold text-slate-300">Admin:</span> admin@healthorbit.org / admin123
+              <li 
+                onClick={() => {
+                  setEmail('admin@healthorbit.org');
+                  setPassword('admin123');
+                  setAuthRole('admin');
+                }}
+                className="cursor-pointer hover:bg-white/5 border border-transparent hover:border-white/10 p-2 rounded-xl transition flex justify-between items-center group font-mono text-[9px]"
+              >
+                <div>
+                  <span className="font-bold text-slate-200 group-hover:text-[#38bdf8] transition-colors">Admin:</span> admin@healthorbit.org / admin123
+                </div>
+                <span className="text-[8px] bg-[#38bdf8]/10 text-[#38bdf8] border border-[#38bdf8]/20 px-1.5 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-all font-sans font-bold">Autofill</span>
               </li>
             </ul>
           </div>

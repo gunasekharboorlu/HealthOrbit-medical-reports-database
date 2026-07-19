@@ -31,6 +31,14 @@
       "role": "patient",
       "name": "John Doe",
       "createdAt": "2026-06-23T08:22:43.796Z"
+    },
+    {
+      "id": "USR-9WNAMOCZ1",
+      "email": "testdoc@gmail.com",
+      "passwordHash": "$2b$10$Z.rPRR5GXc.W74YmCBoyxuDN4/HVskZKbnq7dPA8KGXgnqEkFCDtC",
+      "role": "doctor",
+      "name": "Dr. Test Doc",
+      "createdAt": "2026-07-19T03:13:50.501Z"
     }
   ],
   "patients": [
@@ -82,6 +90,14 @@
       "department": "Neurology Department",
       "joinedDate": "2023-08-10",
       "patientsTreated": 52
+    },
+    {
+      "userId": "USR-9WNAMOCZ1",
+      "specialization": "Neurology",
+      "licenseNumber": "LIC-99999",
+      "hospitalId": "HOSP-1",
+      "hospitalName": "Metro General Hospital",
+      "isVerified": false
     }
   ],
   "hospitals": [
@@ -235,9 +251,61 @@
       "message": "Your doctor account has been registered and is pending verification from the Hospital Administrator.",
       "read": false,
       "createdAt": "2026-06-28T08:22:43.796Z"
+    },
+    {
+      "id": "NOT-F25NG8BCH",
+      "userId": "USR-9WNAMOCZ1",
+      "title": "Account Registered",
+      "message": "Your credentials have been submitted. An administrator will verify your profile shortly.",
+      "read": false,
+      "createdAt": "2026-07-19T03:13:50.502Z"
+    },
+    {
+      "id": "NOT-GLLZX76W6",
+      "userId": "USR-ADMIN",
+      "title": "Pending Doctor Verification",
+      "message": "Dr. Dr. Test Doc registered and is pending verification.",
+      "read": false,
+      "createdAt": "2026-07-19T03:13:50.502Z"
     }
   ],
   "auditLogs": [
+    {
+      "id": "LOG-TEHDRUWB3",
+      "userId": "USR-9WNAMOCZ1",
+      "userName": "Dr. Test Doc",
+      "userRole": "doctor",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-19T03:13:53.101Z"
+    },
+    {
+      "id": "LOG-ZZ4PGUKDB",
+      "userId": "USR-9WNAMOCZ1",
+      "userName": "Dr. Test Doc",
+      "userRole": "doctor",
+      "action": "DOCTOR_REGISTER",
+      "details": "Doctor registered with license LIC-99999. Pending verification.",
+      "timestamp": "2026-07-19T03:13:50.502Z"
+    },
+    {
+      "id": "LOG-18GLKXBHM",
+      "userId": "USR-DOC1",
+      "userName": "Dr. Robert Smith",
+      "userRole": "doctor",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-19T03:13:44.773Z"
+    },
+    {
+      "id": "LOG-RS6KOGXEB",
+      "userId": "USR-PAT1",
+      "userName": "John Doe",
+      "userRole": "patient",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-19T03:13:41.461Z"
+    },
     {
       "id": "LOG-1",
       "userId": "USR-PAT1",

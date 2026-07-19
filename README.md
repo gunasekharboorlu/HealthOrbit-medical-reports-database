@@ -6,8 +6,6 @@
 
 This contains everything you need to run your app locally.
 
-The final result : https://smart-interoperable-healthcare-record-management-182797330481.asia-southeast1.run.app/
-
 View your app in AI Studio: https://ai.studio/apps/93661a06-9f08-4549-915d-c56fccefa43a
 
 ## Run Locally

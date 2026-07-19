@@ -123,10 +123,30 @@ export default function App() {
     return () => clearInterval(interval);
   }, [currentUser]);
 
+  const clearAuthForm = () => {
+    setEmail('');
+    setPassword('');
+    setName('');
+    setDob('');
+    setGender('Male');
+    setBloodGroup('O-Positive');
+    setSpecialization('');
+    setLicenseNumber('');
+    setHospitalId('HOSP-1');
+  };
+
+  // Clear forms when switching views between landing, login, or register
+  useEffect(() => {
+    if (view === 'login' || view === 'register' || view === 'landing') {
+      clearAuthForm();
+    }
+  }, [view]);
+
   const handleLogout = () => {
     localStorage.removeItem('sihrms_token');
     setCurrentUser(null);
     setView('landing');
+    clearAuthForm();
     showToast('Logged out successfully', 'success');
   };
 
@@ -185,7 +205,7 @@ export default function App() {
     if (!email || !password) return showToast('Please enter credentials', 'error');
 
     setLoading(true);
-    api.login({ email, password })
+    api.login({ email, password, role: authRole })
       .then(res => {
         localStorage.setItem('sihrms_token', res.token);
         setCurrentUser(res.user);

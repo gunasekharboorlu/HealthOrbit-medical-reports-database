@@ -184,7 +184,7 @@ app.post('/api/auth/register', (req, res) => {
 // Login
 app.post('/api/auth/login', (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({ error: 'Email and password are required' });
@@ -193,6 +193,10 @@ app.post('/api/auth/login', (req, res) => {
     const user = db.getUsers().find(u => u.email.toLowerCase() === email.toLowerCase());
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    if (role && user.role !== role) {
+      return res.status(401).json({ error: `This account is registered as a ${user.role.toUpperCase()}. Please select the correct tab.` });
     }
 
     const isMatch = bcrypt.compareSync(password, user.passwordHash);
