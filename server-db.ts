@@ -220,7 +220,7 @@ const getInitialDatabase = (): DatabaseSchema => {
       hospitalName: 'Metro General Hospital',
       isVerified: true,
       phone: '+1 (555) 234-5678',
-      profilePicture: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300',
+      profilePicture: '',
       about: 'Senior Cardiologist with over 15 years of experience in cardiovascular diseases, cardiac imaging, and preventive medicine.',
       experience: '15 years',
       department: 'Cardiology Department',
@@ -235,7 +235,7 @@ const getInitialDatabase = (): DatabaseSchema => {
       hospitalName: 'Saint Jude Medical Center',
       isVerified: false, // Requires admin verification!
       phone: '+1 (555) 876-5432',
-      profilePicture: 'https://images.unsplash.com/photo-1594824813573-246434de83fb?auto=format&fit=crop&q=80&w=300',
+      profilePicture: '',
       about: 'Neurologist specialized in cognitive neurology, headache disorders, and neuro-rehabilitation.',
       experience: '8 years',
       department: 'Neurology Department',

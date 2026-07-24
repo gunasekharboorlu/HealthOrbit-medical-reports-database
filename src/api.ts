@@ -23,11 +23,18 @@ export async function request(endpoint: string, options: RequestInit = {}) {
     },
   };
 
-  const response = await fetch(url, config);
+  let response: Response;
+  try {
+    response = await fetch(url, config);
+  } catch (netErr) {
+    throw new Error('Unable to connect to the server. Please try again.');
+  }
+
   const contentType = response.headers.get('content-type');
+  const isJson = !!(contentType && contentType.includes('application/json'));
   
   let data: any = null;
-  if (contentType && contentType.includes('application/json')) {
+  if (isJson) {
     try {
       data = await response.json();
     } catch (e) {
@@ -35,13 +42,21 @@ export async function request(endpoint: string, options: RequestInit = {}) {
     }
   }
 
+  if (response.status === 401) {
+    localStorage.removeItem('sihrms_token');
+    window.dispatchEvent(new CustomEvent('healthorbit-session-expired'));
+  }
+
   if (!response.ok) {
-    const errMsg = (data && (data.error || data.message)) || `HTTP Error ${response.status}`;
+    if (!isJson || data === null) {
+      throw new Error('Unable to connect to the server. Please try again.');
+    }
+    const errMsg = (data && (typeof data.error === 'object' ? data.error.message : data.error) || data.message) || `HTTP Error ${response.status}`;
     throw new Error(errMsg);
   }
 
   if (data === null) {
-    throw new Error('Invalid response: Expected JSON from server');
+    throw new Error('Unable to connect to the server. Please try again.');
   }
 
   return data;

@@ -106,6 +106,21 @@ export default function App() {
     }
   }, []);
 
+  // Listen for global session expiration events
+  useEffect(() => {
+    const handleSessionExpired = () => {
+      setCurrentUser(null);
+      setNotifications([]);
+      setUnreadCount(0);
+      setView('landing');
+      showToast('Session expired. Please sign in again.', 'warning');
+    };
+    window.addEventListener('healthorbit-session-expired', handleSessionExpired);
+    return () => {
+      window.removeEventListener('healthorbit-session-expired', handleSessionExpired);
+    };
+  }, []);
+
   // Poll Notifications when logged in
   useEffect(() => {
     if (!currentUser) return;
@@ -279,11 +294,36 @@ export default function App() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // 1. File Size Verification (10MB Max)
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('File size exceeds the 10MB limit. Please select a smaller file.', 'error');
+      e.target.value = '';
+      return;
+    }
+
+    // 2. Extension & MIME Validation
+    const allowedExtensions = ['.pdf', '.png', '.jpg', '.jpeg'];
+    const allowedMimes = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'];
+    const fileExt = '.' + file.name.split('.').pop()?.toLowerCase();
+    const fileMime = file.type ? file.type.toLowerCase() : '';
+
+    if (!allowedExtensions.includes(fileExt) || !allowedMimes.includes(fileMime)) {
+      showToast('Unsupported file type. Only PDF, PNG, JPG, and JPEG records are allowed.', 'error');
+      e.target.value = '';
+      return;
+    }
+
+    // 3. Filename Sanitization
+    const sanitizedName = file.name
+      .replace(/[^a-zA-Z0-9.\-_]/g, '-')
+      .replace(/\.{2,}/g, '.')
+      .slice(0, 80);
+
     const reader = new FileReader();
     reader.onload = () => {
       const base64Content = reader.result as string;
       const fileData = {
-        name: file.name,
+        name: sanitizedName,
         size: `${(file.size / 1024).toFixed(1)} KB`,
         content: base64Content
       };
@@ -294,7 +334,7 @@ export default function App() {
         setUploadFile(fileData);
         // Check for duplicate locally first to show immediate UI warning
         if (patientData?.records) {
-          const isDup = patientData.records.some((r: any) => r.fileName === file.name && r.fileSize === fileData.size);
+          const isDup = patientData.records.some((r: any) => r.fileName === sanitizedName && r.fileSize === fileData.size);
           if (isDup) {
             setDuplicateWarning('Warning: A file with the exact same name and size already exists in your timeline!');
           } else {
@@ -706,6 +746,12 @@ export default function App() {
                 handleDeleteRecord={handleDeleteRecord}
                 handleRespondAccess={handleRespondAccess}
                 downloadFile={downloadFile}
+                currentUser={currentUser}
+                unreadCount={unreadCount}
+                notifications={notifications}
+                handleMarkRead={handleMarkRead}
+                handleMarkAllRead={handleMarkAllRead}
+                handleLogout={handleLogout}
               />
             </motion.div>
           )}
@@ -749,6 +795,9 @@ export default function App() {
                 handleFileChange={(e) => handleFileChange(e, true)}
                 handleDocUploadForPatient={handleDocUploadForPatient}
                 downloadFile={downloadFile}
+                currentUser={currentUser}
+                unreadCount={unreadCount}
+                handleLogout={handleLogout}
               />
             </motion.div>
           )}
@@ -769,6 +818,9 @@ export default function App() {
                 setNewHospitalAddress={setNewHospitalAddress}
                 handleVerifyDoctor={handleVerifyDoctor}
                 handleAddHospital={handleAddHospital}
+                currentUser={currentUser}
+                unreadCount={unreadCount}
+                handleLogout={handleLogout}
               />
             </motion.div>
           )}

@@ -8,6 +8,7 @@ export interface User {
   email: string;
   role: 'patient' | 'doctor' | 'admin';
   name: string;
+  profilePicture?: string;
 }
 
 export interface MedicalRecord {

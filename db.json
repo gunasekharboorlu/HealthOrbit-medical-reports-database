@@ -39,6 +39,22 @@
       "role": "doctor",
       "name": "Dr. Test Doc",
       "createdAt": "2026-07-19T03:13:50.501Z"
+    },
+    {
+      "id": "USR-OOCANS72M",
+      "email": "guna314327@gmail.com",
+      "passwordHash": "$2b$10$a6lpNkhVbXw5hsJSgS/u5ep9Q6nsDDqtLeaTrYRJWAOCIf3uwU.vu",
+      "role": "patient",
+      "name": "guna",
+      "createdAt": "2026-07-19T04:28:29.676Z"
+    },
+    {
+      "id": "USR-DW059QESQ",
+      "email": "guna3143@gmail.com",
+      "passwordHash": "$2b$10$7In1yZgHzxFpi4J.W5ghsuEJVfmkN/RjNOcFR.x.GBN2QPXxS6vua",
+      "role": "patient",
+      "name": "guna",
+      "createdAt": "2026-07-19T09:05:21.443Z"
     }
   ],
   "patients": [
@@ -58,6 +74,32 @@
       "height": "180 cm",
       "weight": "78 kg",
       "currentMedications": "Lisinopril 10mg (once daily), Multivitamins"
+    },
+    {
+      "userId": "USR-OOCANS72M",
+      "patientId": "PAT-100002",
+      "dob": "2006-06-16",
+      "gender": "Male",
+      "bloodGroup": "O-Positive",
+      "allergies": "",
+      "chronicDiseases": "",
+      "emergencyContactName": "",
+      "emergencyContactPhone": "",
+      "emergencyContactRelation": "",
+      "isEmergencyProfileComplete": false
+    },
+    {
+      "userId": "USR-DW059QESQ",
+      "patientId": "PAT-100003",
+      "dob": "2006-06-16",
+      "gender": "Male",
+      "bloodGroup": "O-Positive",
+      "allergies": "",
+      "chronicDiseases": "",
+      "emergencyContactName": "",
+      "emergencyContactPhone": "",
+      "emergencyContactRelation": "",
+      "isEmergencyProfileComplete": false
     }
   ],
   "doctors": [
@@ -267,9 +309,142 @@
       "message": "Dr. Dr. Test Doc registered and is pending verification.",
       "read": false,
       "createdAt": "2026-07-19T03:13:50.502Z"
+    },
+    {
+      "id": "NOT-K8Q31XRNG",
+      "userId": "USR-OOCANS72M",
+      "title": "Welcome to SIHRMS!",
+      "message": "Your account has been registered successfully. Your Patient ID is PAT-100002. Keep this secure!",
+      "read": false,
+      "createdAt": "2026-07-19T04:28:29.678Z"
+    },
+    {
+      "id": "NOT-8BGAIPXJJ",
+      "userId": "USR-DW059QESQ",
+      "title": "Welcome to SIHRMS!",
+      "message": "Your account has been registered successfully. Your Patient ID is PAT-100003. Keep this secure!",
+      "read": false,
+      "createdAt": "2026-07-19T09:05:21.444Z"
     }
   ],
   "auditLogs": [
+    {
+      "id": "LOG-68U7HLXGU",
+      "userId": "USR-DOC1",
+      "userName": "Dr. Robert Smith",
+      "userRole": "doctor",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-24T15:17:26.710Z"
+    },
+    {
+      "id": "LOG-LRJ7QZQJD",
+      "userId": "USR-ADMIN",
+      "userName": "Sarah Jenkins",
+      "userRole": "admin",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-24T15:07:59.545Z"
+    },
+    {
+      "id": "LOG-LXJERNE6V",
+      "userId": "USR-DOC1",
+      "userName": "Dr. Robert Smith",
+      "userRole": "doctor",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-24T15:07:12.629Z"
+    },
+    {
+      "id": "LOG-6NORQ8WAI",
+      "userId": "USR-PAT1",
+      "userName": "John Doe",
+      "userRole": "patient",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-24T15:06:47.004Z"
+    },
+    {
+      "id": "LOG-TZIYSHQUD",
+      "userId": "USR-ADMIN",
+      "userName": "Sarah Jenkins",
+      "userRole": "admin",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-24T14:57:09.893Z"
+    },
+    {
+      "id": "LOG-4ZZQM35SM",
+      "userId": "USR-DOC1",
+      "userName": "Dr. Robert Smith",
+      "userRole": "doctor",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-24T14:56:10.126Z"
+    },
+    {
+      "id": "LOG-W0SEOKUQI",
+      "userId": "USR-PAT1",
+      "userName": "John Doe",
+      "userRole": "patient",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-24T14:55:15.870Z"
+    },
+    {
+      "id": "LOG-BC059XA67",
+      "userId": "USR-ADMIN",
+      "userName": "Sarah Jenkins",
+      "userRole": "admin",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-19T09:06:32.310Z"
+    },
+    {
+      "id": "LOG-N4AAS5LPW",
+      "userId": "USR-PAT1",
+      "userName": "John Doe",
+      "userRole": "patient",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-19T09:06:14.905Z"
+    },
+    {
+      "id": "LOG-LHFKQQ464",
+      "userId": "USR-PAT1",
+      "userName": "John Doe",
+      "userRole": "patient",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-19T09:05:47.662Z"
+    },
+    {
+      "id": "LOG-CWO66TI08",
+      "userId": "USR-DW059QESQ",
+      "userName": "guna",
+      "userRole": "patient",
+      "action": "PATIENT_REGISTER",
+      "details": "Patient registered with ID PAT-100003",
+      "timestamp": "2026-07-19T09:05:21.444Z"
+    },
+    {
+      "id": "LOG-XE99DQH14",
+      "userId": "USR-OOCANS72M",
+      "userName": "guna",
+      "userRole": "patient",
+      "action": "USER_LOGIN",
+      "details": "User logged in from 127.0.0.1",
+      "timestamp": "2026-07-19T05:06:13.761Z"
+    },
+    {
+      "id": "LOG-EQ163RI4O",
+      "userId": "USR-OOCANS72M",
+      "userName": "guna",
+      "userRole": "patient",
+      "action": "PATIENT_REGISTER",
+      "details": "Patient registered with ID PAT-100002",
+      "timestamp": "2026-07-19T04:28:29.678Z"
+    },
     {
       "id": "LOG-TEHDRUWB3",
       "userId": "USR-9WNAMOCZ1",
